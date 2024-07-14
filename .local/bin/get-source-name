@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+pactl \
+    -f json \
+    list sources \
+        | jq -r ".[] \
+            | select(.name == \"$(pactl get-default-source)\") \
+            | .properties \
+            | .[\"device.nick\"]" \

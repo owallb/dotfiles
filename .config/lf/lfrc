@@ -1,0 +1,17 @@
+# set previewer ~/.config/lf/pv_sandbox.sh
+# map i $~/.config/lf/pv_sandbox.sh $f | less -R
+
+set preview false
+set ratios 1
+set hidden true
+set info size:time
+set promptfmt "\033[34;1m%d\033[0m"
+set incsearch true
+set incfilter true
+set period 1
+
+# map f filter
+# map j updir
+# map k down
+# map l up
+# map ; open

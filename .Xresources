@@ -1,0 +1,66 @@
+
+Xft.dpi: 96
+Xtf.rgba: rgb
+Xft.antialias: true
+Xft.hinting: true
+Xft.authint: false
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+
+! See man-pages for avaiable resources:
+! https://linux.die.net/man/1/urxvt
+URxvt.scrollBar: false
+URxvt.skipBuiltinGlyphs: true
+URxvt.termName: xterm-256color
+URxvt.font: xft:Iosevka Custom:size=11
+URxvt.foreground: #bdbdbd
+URxvt.background: #080808
+URxvt.color0: #323437
+URxvt.color1: #ff5454
+URxvt.color2: #8cc85f
+URxvt.color3: #e3c78a
+URxvt.color4: #80a0ff
+URxvt.color5: #cf87e8
+URxvt.color6: #79dac8
+URxvt.color7: #c6c6c6
+URxvt.color8: #949494
+URxvt.color9: #ff5189
+URxvt.color10: #36c692
+URxvt.color11: #c2c292
+URxvt.color12: #74b2ff
+URxvt.color13: #ae81ff
+URxvt.color14: #85dc85
+URxvt.color15: #e4e4e4
+
+XTerm.termName: xterm-256color
+XTerm.ttyModes: erase ^?
+XTerm.vt100.locale: false
+XTerm.vt100.utf8: true
+XTerm.vt100.metaSendsEscape: true
+XTerm.vt100.backarrowKey: false
+XTerm.vt100.scrollBar: false
+XTerm.vt100.renderFont: true
+XTerm.vt100.showMissingGlyphs: true
+XTerm.vt100.faceName: xft:Iosevka Custom
+XTerm.vt100.faceSize: 11
+XTerm.vt100.foreground: #bdbdbd
+XTerm.vt100.background: #080808
+XTerm.vt100.color0: #323437
+XTerm.vt100.color1: #ff5454
+XTerm.vt100.color2: #8cc85f
+XTerm.vt100.color3: #e3c78a
+XTerm.vt100.color4: #80a0ff
+XTerm.vt100.color5: #cf87e8
+XTerm.vt100.color6: #79dac8
+XTerm.vt100.color7: #c6c6c6
+XTerm.vt100.color8: #949494
+XTerm.vt100.color9: #ff5189
+XTerm.vt100.color10: #36c692
+XTerm.vt100.color11: #c2c292
+XTerm.vt100.color12: #74b2ff
+XTerm.vt100.color13: #ae81ff
+XTerm.vt100.color14: #85dc85
+XTerm.vt100.color15: #e4e4e4
+
+Xcursor.theme: Adwaita
+Xcursor.size: 16

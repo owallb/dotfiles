@@ -1,0 +1,72 @@
+#!/usr/bin/env sh
+
+JSON=""
+
+add_volume() {
+    # name=$(get-sink-name)
+    mute=$(pactl get-sink-mute @DEFAULT_SINK@)
+    volume=$( \
+        pactl get-sink-volume @DEFAULT_SINK@ \
+            | grep -Eo '[0-9]+%' \
+            | cut -d% -f1 \
+            | head -n 1 \
+    )
+
+    maybe_color=""
+    if echo $mute | grep -q yes; then
+        # maybe_color='"color": "#AA5500",'
+        maybe_color='"color": "#555555",'
+    fi
+
+    JSON=$( \
+        echo "$JSON" \
+            | jq ". |= [{
+                \"name\": \"volume\",
+                \"markup\": \"none\",
+                $maybe_color
+                \"full_text\": \"VOL: $volume %\"
+            }] + ."
+    )
+}
+
+add_mic() {
+    # name=$(get-source-name)
+    mute=$(pactl get-source-mute @DEFAULT_SOURCE@)
+    volume=$( \
+        pactl get-source-volume @DEFAULT_SOURCE@ \
+            | grep -Eo '[0-9]+%' \
+            | cut -d% -f1 \
+            | head -n 1 \
+    )
+
+    maybe_color=""
+    if echo $mute | grep -q yes; then
+        maybe_color='"color": "#555555",'
+    fi
+
+    JSON=$( \
+        echo "$JSON" \
+            | jq ". |= [{
+                \"name\": \"mic\",
+                \"markup\": \"none\",
+                $maybe_color
+                \"full_text\": \"MIC: $volume %\"
+            }] + ."
+    )
+}
+
+i3status | (
+    read version
+    echo "$version"
+
+    read init_arr
+    echo "$init_arr"
+
+    while true; do
+        read line
+        JSON=$(echo "$line" | sed -e 's/^,//' | jq)
+        # add_volume
+        # add_mic
+        echo "${JSON}," 
+    done
+)

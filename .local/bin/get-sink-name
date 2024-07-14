@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+pactl \
+    -f json \
+    list sinks \
+        | jq -r ".[] \
+            | select(.name == \"$(pactl get-default-sink)\") \
+            | .description \
+        "

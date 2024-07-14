@@ -1,0 +1,57 @@
+general {
+    output_format = "i3bar"
+    colors = true
+    interval = 5
+}
+
+order += "disk /"
+order += "cpu_temperature 0"
+order += "cpu_usage"
+order += "memory"
+order += "battery 0"
+order += "time"
+order += "tztime chennai"
+order += "tztime stockholm"
+
+disk "/" {
+    format = "DISK: %used / %total"
+    low_threshold = 20
+    threshold_type = "gbytes_avail"
+}
+
+cpu_temperature 0 {
+    format = "CPU: %degrees °C"
+    max_threshold = 75
+    path = "/sys/devices/virtual/thermal/thermal_zone0/temp"
+    #path = "hw.acpi.thermal.tz0.temperature"
+}
+
+cpu_usage {
+    format = "%usage"
+    max_threshold = 95
+    degraded_threshold = 90
+}
+
+memory {
+    format = "MEM: %used / %total"
+    threshold_degraded = "2G"
+    threshold_critical = "1G"
+}
+
+battery 0 {
+    format = "%status: %percentage"
+    format_percentage = "%.00f%s"
+    format_down = "No battery"
+    path = "/sys/class/power_supply/BAT%d/uevent"
+    low_threshold = 10
+    threshold_type = "percentage"
+}
+
+time {
+    format = "%d-%m-%Y "
+}
+
+tztime stockholm {
+    format = "%H:%M %Z"
+    timezone = "Europe/Stockholm"
+}

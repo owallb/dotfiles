@@ -1,0 +1,6 @@
+zsh-users/zsh-completions
+belak/zsh-utils path:completion
+belak/zsh-utils path:history
+belak/zsh-utils path:utility
+zsh-users/zsh-autosuggestions
+romkatv/powerlevel10k

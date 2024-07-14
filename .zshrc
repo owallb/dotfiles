@@ -1,0 +1,186 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}"
+p10k_instant_prompt="${cache_dir}/p10k-instant-prompt-${USER}.zsh"
+if [[ -r $p10k_instant_prompt ]]; then
+  # shellcheck disable=SC1090
+  source "$p10k_instant_prompt"
+fi
+
+###########
+# Options #
+###########
+# Ref: https://zsh.sourceforge.io/Doc/Release/Options.html
+
+setopt CORRECT
+setopt NONOMATCH
+setopt INTERACTIVECOMMENTS
+
+###################
+# Shell Variables #
+###################
+# Ref: https://zsh.sourceforge.io/Doc/Release/Parameters.html
+
+path+=("${HOME}/.local/bin")
+export PATH
+export MAIL="/var/spool/mail/$USER"
+export MAILCHECK=60
+
+###################
+# Other Variables #
+###################
+
+export VISUAL="nvim"
+export EDITOR="nvim"
+export DIFFPROG="nvim -d"
+export NNN_TRASH=2
+export NNN_PLUG=''
+
+##################
+# History search #
+##################
+
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+
+# Fix for buggy behaviour of history search
+# See https://github.com/zsh-users/zsh-autosuggestions/issues/619#issuecomment-904193190
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-backward-end history-beginning-search-forward-end)
+
+zstyle ':autocomplete:tab:*' completion select
+
+############
+# Keybinds #
+############
+
+if ! infocmp "$TERM" >/dev/null; then
+    echo "TERM $TERM not supported on your system!" >&2
+    echo "Some keybindings might not work properly." >&2
+fi
+
+if [[ -n $terminfo ]]; then
+    # create a zkbd compatible hash;
+    # to add other keys to this hash, see: man terminfo 5
+    typeset -g -A key
+
+    key[Home]=${terminfo[khome]}
+    key[End]=${terminfo[kend]}
+    key[Insert]=${terminfo[kich1]}
+    key[Delete]=${terminfo[kdch1]}
+    key[Up]=${terminfo[kcuu1]}
+    key[Down]=${terminfo[kcud1]}
+    key[Left]=${terminfo[kcub1]}
+    key[Right]=${terminfo[kcuf1]}
+    key[PageUp]=${terminfo[kpp]}
+    key[PageDown]=${terminfo[knp]}
+    key[CtrlLeft]=${terminfo[kLFT5]}
+    key[CtrlRight]=${terminfo[kRIT5]}
+
+    # Function mapping
+    [[ -n "${key[Home]}"       ]]  && bindkey  "${key[Home]}"      beginning-of-line
+    [[ -n "${key[End]}"        ]]  && bindkey  "${key[End]}"       end-of-line
+    [[ -n "${key[Insert]}"     ]]  && bindkey  "${key[Insert]}"    overwrite-mode
+    [[ -n "${key[Delete]}"     ]]  && bindkey  "${key[Delete]}"    delete-char
+    [[ -n "${key[Up]}"         ]]  && bindkey  "${key[Up]}"        history-beginning-search-backward-end
+    [[ -n "${key[Down]}"       ]]  && bindkey  "${key[Down]}"      history-beginning-search-forward-end
+    [[ -n "${key[Left]}"       ]]  && bindkey  "${key[Left]}"      backward-char
+    [[ -n "${key[Right]}"      ]]  && bindkey  "${key[Right]}"     forward-char
+    [[ -n "${key[PageUp]}"     ]]  && bindkey  "${key[PageUp]}"    beginning-of-history
+    [[ -n "${key[PageDown]}"   ]]  && bindkey  "${key[PageDown]}"  end-of-history
+    [[ -n "${key[CtrlLeft]}"   ]]  && bindkey  "${key[CtrlLeft]}"  backward-word
+    [[ -n "${key[CtrlRight]}"   ]]  && bindkey  "${key[CtrlRight]}"  forward-word
+
+    bindkey "^R" history-incremental-search-backward
+
+    # Finally, make sure the terminal is in application mode, when zle is
+    # active. Only then are the values from $terminfo valid.
+    if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
+            autoload -Uz add-zle-hook-widget
+            function zle_application_mode_start { echoti smkx; }
+            function zle_application_mode_stop { echoti rmkx; }
+            add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
+            add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
+    fi
+fi
+
+###########
+# Plugins #
+###########
+
+# Bootstrap
+if [[ ! -d ~/.antidote ]]; then
+    git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
+fi
+
+# Plugins are declared in ~/.zsh_plugins.txt
+source ~/.antidote/antidote.zsh
+antidote load
+
+#############
+# Functions #
+#############
+# Ref: https://zsh.sourceforge.io/Doc/Release/Functions.html#Functions
+
+function set_terminal_title() {
+    local title
+    if [ -z "$1" ]; then
+        title=$(basename $(print -P "%~"))
+    else
+        title="$1"
+    fi
+    echo -ne "\033]2;$title\033\\"
+}
+
+function precmd() { set_terminal_title }
+# function preexec() { set_terminal_title "$1" }
+
+function ssh_with_title() {
+    local host=""
+    local skip_next="false"
+    
+    for arg in "$@"; do
+        case "$arg" in
+            -[bcDeFIiLlmOopRSWw]?*)
+                # Option with argument immediately after, like -p22
+                skip_next="false"
+                ;;
+            -[bcDeFIiLlmOopRSWw])
+                # Option with argument on next iteration
+                skip_next="true"
+                ;;
+            -*)
+                # Any other option, assumed not to take an argument
+                skip_next="false"
+                ;;
+            *)
+                if [ "$skip_next" = "true" ]; then
+                    skip_next="false"
+                else
+                    host="${arg#*@}"
+                fi
+                ;;
+        esac
+    done
+
+    set_terminal_title "$host"
+    ssh "$@"
+    set_terminal_title
+}
+
+###########
+# Aliases #
+###########
+
+alias ln='ln -fi'
+alias rm='rm -I'
+alias n='nnn -dHerU'
+alias ssh='ssh_with_title'
+
+##########
+# Prompt #
+##########
+# eval "$(starship init zsh)"
+
+source ~/.p10k.zsh
