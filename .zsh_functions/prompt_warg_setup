@@ -1,0 +1,59 @@
+# vim: set ft=zsh:
+
+# For help with expansion codes, see:
+# - https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
+# For help with parameters, see:
+# - https://zsh.sourceforge.io/Doc/Release/Parameters.html
+
+
+# shellcheck disable=SC2034
+function prompt_warg_precmd() {
+    local -a _status=(${pipestatus[@]})
+    RPS1=""
+
+    # Status code
+    if [[ ${#${_status//0/}} -gt 0 ]]; then
+        RPS1="$RPS1 %F{red}${(j:|:)_status}%f"
+    fi
+
+    # Python virtualenv
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        local _venv_name _venv_parent
+        local _pyvenv_file="${VIRTUAL_ENV}/pyvenv.cfg"
+
+        if [[ -f "$_pyvenv_file" ]]; then
+            while IFS=' = ' read -r key value; do
+                if [[ "$key" == "prompt" ]]; then
+                    _venv_name="$value"
+                    break
+                fi
+            done <"$_pyvenv_file"
+        fi
+
+        _venv_name="${_venv_name:-${VIRTUAL_ENV:t}}"
+        _venv_parent="${VIRTUAL_ENV:h:t}"
+
+        if [[ "$_venv_name" == "venv" || "$_venv_name" == ".venv" ]]; then
+            _venv_name="$_venv_parent"
+        fi
+
+        RPS1="$RPS1 %F{yellow}$_venv_name%f"
+    fi
+
+    # Timestamp
+    RPS1="$RPS1 %F{008}%D{%H:%M:%S}%f"
+}
+
+# shellcheck disable=SC2034
+function prompt_warg_setup() {
+    VIRTUAL_ENV_DISABLE_PROMPT=1
+    prompt_opts=(bang cr sp percent subst)
+    # PS1="%n@%m %~ $ "
+    PS1='%(#.%F{red}.%12F)%n@%m%f %1~ %(#.#.$) '
+    PS2="> "
+
+    add-zsh-hook precmd prompt_warg_precmd
+}
+
+
+prompt_warg_setup "$@"

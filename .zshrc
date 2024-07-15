@@ -1,13 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}"
-p10k_instant_prompt="${cache_dir}/p10k-instant-prompt-${USER}.zsh"
-if [[ -r $p10k_instant_prompt ]]; then
-  # shellcheck disable=SC1090
-  source "$p10k_instant_prompt"
-fi
-
 ###########
 # Options #
 ###########
@@ -23,6 +13,7 @@ setopt INTERACTIVECOMMENTS
 # Ref: https://zsh.sourceforge.io/Doc/Release/Parameters.html
 
 path+=("${HOME}/.local/bin")
+fpath+=("${HOME}/.zsh_functions")
 export PATH
 export MAIL="/var/spool/mail/$USER"
 export MAILCHECK=60
@@ -126,14 +117,16 @@ antidote load
 function set_terminal_title() {
     local title
     if [ -z "$1" ]; then
-        title=$(basename $(print -P "%~"))
+        title=$(basename "$(print -P "%~")")
     else
         title="$1"
     fi
     echo -ne "\033]2;$title\033\\"
 }
 
-function precmd() { set_terminal_title }
+function precmd() {
+    set_terminal_title
+}
 # function preexec() { set_terminal_title "$1" }
 
 function ssh_with_title() {
@@ -183,4 +176,12 @@ alias ssh='ssh_with_title'
 ##########
 # eval "$(starship init zsh)"
 
-source ~/.p10k.zsh
+autoload -Uz promptinit
+promptinit
+prompt warg
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/oscar/google-cloud-sdk/path.zsh.inc' ]; then . '/home/oscar/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/oscar/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/oscar/google-cloud-sdk/completion.zsh.inc'; fi
