@@ -5,14 +5,14 @@
 # For help with parameters, see:
 # - https://zsh.sourceforge.io/Doc/Release/Parameters.html
 
-
 # shellcheck disable=SC2034
 function prompt_warg_precmd() {
-    local -a _status=(${pipestatus[@]})
+    local -a _status=("${pipestatus[@]}")
     RPS1=""
 
     # Status code
     if [[ ${#${_status//0/}} -gt 0 ]]; then
+        # shellcheck disable=SC2296
         RPS1="$RPS1 %F{red}${(j:|:)_status}%f"
     fi
 
@@ -41,7 +41,7 @@ function prompt_warg_precmd() {
     fi
 
     # Timestamp
-    RPS1="$RPS1 %F{008}%D{%H:%M:%S}%f"
+    RPS1="$RPS1 %8F%D{%H:%M:%S}%f"
 }
 
 # shellcheck disable=SC2034
