@@ -42,6 +42,7 @@ SYMLINKS=(
     ".zshrc"
     ".zsh_functions"
     ".zsh_plugins.txt"
+    ".p10k.zsh"
     ".gtkrc-2.0"
     ".config/tmux"
     ".config/alacritty"
@@ -53,6 +54,7 @@ SYMLINKS=(
     ".config/lf"
     ".config/gtk-3.0"
     ".config/gtk-4.0"
+    ".config/yay"
     ".local/bin"
     ".local/share/fonts"
 )
