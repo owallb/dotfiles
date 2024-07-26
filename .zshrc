@@ -1,3 +1,6 @@
+
+_here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
+
 ###########
 # Options #
 ###########
@@ -12,8 +15,8 @@ setopt INTERACTIVECOMMENTS
 ###################
 # Ref: https://zsh.sourceforge.io/Doc/Release/Parameters.html
 
-path+=("${HOME}/.local/bin")
-fpath+=("${HOME}/.zsh_functions")
+path=("${HOME}/.local/bin" "${path[@]}")
+fpath=("${_here}/.zsh_functions" "${fpath[@]}")
 export PATH
 export MAIL="/var/spool/mail/$USER"
 export MAILCHECK=60
@@ -100,14 +103,31 @@ fi
 # Plugins #
 ###########
 
-# Bootstrap
-if [[ ! -d ~/.antidote ]]; then
-    git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
+if [[ ! -d "${_here}/.cache" ]]; then
+    mkdir "${_here}/.cache"
 fi
 
-# Plugins are declared in ~/.zsh_plugins.txt
-source ~/.antidote/antidote.zsh
-antidote load
+_antidote="${_here}/.cache/.antidote"
+_plugins="${_here}/.zsh_plugins.txt"
+_plugins_cache="${_here}/.cache/.zsh_plugins.zsh"
+
+if [[ ! -d "$_antidote" ]]; then
+    git clone --depth=1 https://github.com/mattmc3/antidote.git "$_antidote"
+fi
+
+if [[ ! -f "${_plugins}" ]]; then
+    touch "${_plugins}"
+fi
+
+fpath=("${_antidote}/functions" "${fpath[@]}")
+autoload -Uz antidote
+
+if [[ ! "${_plugins_cache}" -nt "${_plugins}" ]]; then
+    antidote bundle <"${_plugins}" >"${_plugins_cache}"
+fi
+
+# shellcheck source=.cache/.zsh_plugins.zsh
+source "${_plugins_cache}"
 
 #############
 # Functions #
@@ -174,7 +194,6 @@ alias ssh='ssh_with_title'
 ##########
 # Prompt #
 ##########
-# eval "$(starship init zsh)"
 
 autoload -Uz promptinit
 promptinit
