@@ -75,6 +75,8 @@ fi
 # shellcheck source=.cache/.zsh_plugins.zsh
 source "${_plugins_cache}"
 
+unset _antidote _plugins _plugins_cache
+
 #############
 # Functions #
 #############
@@ -150,3 +152,9 @@ prompt warg
 
 # Emacs mode
 bindkey -e
+
+###########
+# Cleanup #
+###########
+
+unset _here
