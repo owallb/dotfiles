@@ -45,60 +45,6 @@ export DIFFPROG="nvim -d"
 export NNN_TRASH=2
 export NNN_PLUG=''
 
-############
-# Keybinds #
-############
-
-if ! infocmp "$TERM" >/dev/null; then
-    echo "TERM $TERM not supported on your system!" >&2
-    echo "Some keybindings might not work properly." >&2
-fi
-
-if [[ -n $terminfo ]]; then
-    # create a zkbd compatible hash;
-    # to add other keys to this hash, see: man terminfo 5
-    typeset -g -A key
-
-    key[Home]=${terminfo[khome]}
-    key[End]=${terminfo[kend]}
-    key[Insert]=${terminfo[kich1]}
-    key[Delete]=${terminfo[kdch1]}
-    key[Up]=${terminfo[kcuu1]}
-    key[Down]=${terminfo[kcud1]}
-    key[Left]=${terminfo[kcub1]}
-    key[Right]=${terminfo[kcuf1]}
-    key[PageUp]=${terminfo[kpp]}
-    key[PageDown]=${terminfo[knp]}
-    key[CtrlLeft]=${terminfo[kLFT5]}
-    key[CtrlRight]=${terminfo[kRIT5]}
-
-    # Function mapping
-    [[ -n "${key[Home]}"       ]]  && bindkey  "${key[Home]}"      beginning-of-line
-    [[ -n "${key[End]}"        ]]  && bindkey  "${key[End]}"       end-of-line
-    [[ -n "${key[Insert]}"     ]]  && bindkey  "${key[Insert]}"    overwrite-mode
-    [[ -n "${key[Delete]}"     ]]  && bindkey  "${key[Delete]}"    delete-char
-    [[ -n "${key[Up]}"         ]]  && bindkey  "${key[Up]}"        history-beginning-search-backward-end
-    [[ -n "${key[Down]}"       ]]  && bindkey  "${key[Down]}"      history-beginning-search-forward-end
-    [[ -n "${key[Left]}"       ]]  && bindkey  "${key[Left]}"      backward-char
-    [[ -n "${key[Right]}"      ]]  && bindkey  "${key[Right]}"     forward-char
-    [[ -n "${key[PageUp]}"     ]]  && bindkey  "${key[PageUp]}"    beginning-of-history
-    [[ -n "${key[PageDown]}"   ]]  && bindkey  "${key[PageDown]}"  end-of-history
-    [[ -n "${key[CtrlLeft]}"   ]]  && bindkey  "${key[CtrlLeft]}"  backward-word
-    [[ -n "${key[CtrlRight]}"   ]]  && bindkey  "${key[CtrlRight]}"  forward-word
-
-    bindkey "^R" history-incremental-search-backward
-
-    # Finally, make sure the terminal is in application mode, when zle is
-    # active. Only then are the values from $terminfo valid.
-    if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
-            autoload -Uz add-zle-hook-widget
-            function zle_application_mode_start { echoti smkx; }
-            function zle_application_mode_stop { echoti rmkx; }
-            add-zle-hook-widget -Uz zle-line-init zle_application_mode_start
-            add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
-    fi
-fi
-
 ###########
 # Plugins #
 ###########
@@ -198,3 +144,10 @@ alias ssh='ssh_with_title'
 autoload -Uz promptinit
 promptinit
 prompt warg
+
+########
+# Misc #
+########
+
+# Emacs mode
+bindkey -e
