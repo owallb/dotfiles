@@ -7,8 +7,19 @@ _here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
 # Ref: https://zsh.sourceforge.io/Doc/Release/Options.html
 
 setopt CORRECT
-setopt NONOMATCH
-setopt INTERACTIVECOMMENTS
+setopt INTERACTIVE_COMMENTS
+unsetopt NOMATCH
+
+# History
+setopt BANG_HIST
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_STORE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY_TIME
 
 ###################
 # Shell Variables #
@@ -20,6 +31,9 @@ fpath=("${_here}/.zsh_functions" "${fpath[@]}")
 export PATH
 export MAIL="/var/spool/mail/$USER"
 export MAILCHECK=60
+export HISTFILE="${HOME}/.zsh_history"
+export HISTSIZE=100100
+export SAVEHIST=100000
 
 ###################
 # Other Variables #
@@ -30,20 +44,6 @@ export EDITOR="nvim"
 export DIFFPROG="nvim -d"
 export NNN_TRASH=2
 export NNN_PLUG=''
-
-##################
-# History search #
-##################
-
-autoload -U history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-
-# Fix for buggy behaviour of history search
-# See https://github.com/zsh-users/zsh-autosuggestions/issues/619#issuecomment-904193190
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-backward-end history-beginning-search-forward-end)
-
-zstyle ':autocomplete:tab:*' completion select
 
 ############
 # Keybinds #
