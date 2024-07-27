@@ -9,7 +9,7 @@ SCRIPT_NAME="$(basename -- "$SCRIPT_FILE")"
 SCRIPT_DIR="$(dirname -- "$SCRIPT_FILE")"
 
 SOURCE_DIR="$SCRIPT_DIR"
-TARGET_DIR="$HOME"
+DEST_DIR="$HOME"
 
 PRINT_HELP=false
 REMOVE_EXISTING=false
@@ -39,8 +39,6 @@ SYMLINKS=(
     ".Xresources"
     ".xinitrc"
     ".xinit-scripts"
-    ".zshrc"
-    ".p10k.zsh"
     ".gtkrc-2.0"
     ".config/tmux"
     ".config/alacritty"
@@ -57,6 +55,9 @@ SYMLINKS=(
     ".local/share/fonts"
 )
 
+typeset -A SYMLINK_MAP
+SYMLINK_MAP[zsh/rc]=".zshrc"
+
 error() {
     msg="$1"
     ERROR=true
@@ -71,62 +72,88 @@ check_packages_installed() {
     done
 }
 
-create_symlinks() {
+remove_symlink() {
+    local link src
+    link="${DEST_DIR}/$1"
+
+    if test -s "$link"; then
+        src="$(readlink -f -- "$link")"
+        echo "Removing symlink: $link -> $src"
+        rm "$link"
+    elif test -e "$link"; then
+        error "object to be removed is not a symlink:"
+        error "${link}: $(stat -c '%F' -- "$link")"
+
+        return 1
+    fi
+}
+
+remove_all_symlinks() {
     for link in "${SYMLINKS[@]}"; do
-        SOURCE_PATH="${SOURCE_DIR}/$link"
+        remove_symlink "$link"
+    done
 
-        # Check source exists
-        if ! test -e "$SOURCE_PATH"; then
-            error "the following source path does not exist:"
-            error "$SOURCE_PATH"
-            continue
-        fi
-
-        TARGET_LINK="${TARGET_DIR}/$link"
-        TARGET_LINK_PARENT="$(dirname -- "$TARGET_LINK")"
-
-        # Create parent dirs if necessary
-        if ! test -d "$TARGET_LINK_PARENT"; then
-            echo "Creating $TARGET_LINK_PARENT"
-            mkdir -p "$TARGET_LINK_PARENT"
-        fi
-
-        # Check if already exists as a symlink
-        if test -s "$TARGET_LINK"; then
-            if ! $IGNORE_EXISTING; then
-                error "target link already exists:"
-                error "$TARGET_LINK"
-            fi
-            continue
-        elif test -e "$TARGET_LINK"; then
-            error "target path already exists and is not a symlink:"
-            error "$TARGET_LINK"
-            continue
-        fi
-
-        # Create link
-        echo "Linking $SOURCE_PATH -> $TARGET_LINK"
-        ln -s "$SOURCE_PATH" "$TARGET_LINK"
+    for src dst in ${(kv)SYMLINK_MAP}; do
+        remove_symlink "$dst"
     done
 }
 
-remove_existing() {
-    for link in "${SYMLINKS[@]}"; do
-        TARGET_LINK="${TARGET_DIR}/$link"
-        TARGET_LINK_PARENT="$(dirname -- "$TARGET_LINK")"
+create_symlink() {
+    local src dst dst_parent
 
-        if test -s "$TARGET_LINK"; then\
-            echo "Removing symlink $TARGET_LINK"
-            rm "$TARGET_LINK"
-        elif test -e "$TARGET_LINK"; then
-            error "target path already exists and is not a symlink:"
-            error "$TARGET_LINK"
+    if test -z "$1"; then
+        error "missing src argument:"
+        error "$0 $1 $2"
+        return
+    fi
+
+    if test -z "$2"; then
+        error "missing dst argument:"
+        error "$0 $1 $2"
+        return
+    fi
+
+    src="${SCRIPT_DIR}/$1"
+    dst="${DEST_DIR}/$2"
+    dst_parent="$(dirname -- "$dst")"
+    
+    if ! test -e "$src"; then
+        error "the following source path does not exist:"
+        error "$src"
+        return
+    fi
+    
+    if ! test -d "$dst_parent"; then
+        echo "Creating $dst_parent"
+        mkdir -p "$dst_parent"
+    fi
+
+    if test -s "$dst"; then
+        if $IGNORE_EXISTING; then
+            remove_symlink "$2"
+        else
+            error "path already exists:"
+            error "$dst"
+            return
         fi
+    elif test -e "$dst"; then
+        error "path already exists and is not a symlink:"
+        error "${dst}: $(stat -c '%F' -- "$dst")"
+        return
+    fi
+    
+    echo "Creating link: $dst -> $src"
+    ln -s "$src" "$dst"
+}
+
+create_all_symlinks() {
+    for link in "${SYMLINKS[@]}"; do
+        create_symlink "$link" "$link"
     done
 
-    if $ERROR; then
-        exit 1
-    fi
+    for src dst in ${(kv)SYMLINK_MAP}; do
+        create_symlink "$src" "$dst"
+    done
 }
 
 check_terminfo() {
@@ -174,11 +201,11 @@ done
 if $PRINT_HELP; then
     print_help
 elif $REMOVE_EXISTING; then
-    remove_existing
+    remove_all_symlinks
 else
     check_terminfo
     check_packages_installed
-    create_symlinks
+    create_all_symlinks
 fi
 
 if $ERROR; then

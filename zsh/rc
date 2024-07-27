@@ -1,3 +1,4 @@
+# vim: set ft=zsh:
 
 _here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
 
@@ -27,7 +28,7 @@ setopt INC_APPEND_HISTORY_TIME
 # Ref: https://zsh.sourceforge.io/Doc/Release/Parameters.html
 
 path=("${HOME}/.local/bin" "${path[@]}")
-fpath=("${_here}/.zsh_functions" "${fpath[@]}")
+fpath=("${_here}/functions" "${fpath[@]}")
 export PATH
 export MAIL="/var/spool/mail/$USER"
 export MAILCHECK=60
@@ -54,8 +55,8 @@ if [[ ! -d "${_here}/.cache" ]]; then
 fi
 
 _antidote="${_here}/.cache/.antidote"
-_plugins="${_here}/.zsh_plugins.txt"
-_plugins_cache="${_here}/.cache/.zsh_plugins.zsh"
+_plugins="${_here}/plugins"
+_plugins_cache="${_here}/.cache/plugins.zsh"
 
 if [[ ! -d "$_antidote" ]]; then
     git clone --depth=1 https://github.com/mattmc3/antidote.git "$_antidote"
@@ -72,7 +73,7 @@ if [[ ! "${_plugins_cache}" -nt "${_plugins}" ]]; then
     antidote bundle <"${_plugins}" >"${_plugins_cache}"
 fi
 
-# shellcheck source=.cache/.zsh_plugins.zsh
+# shellcheck source=zsh/.cache/plugins.zsh
 source "${_plugins_cache}"
 
 unset _antidote _plugins _plugins_cache
@@ -132,6 +133,7 @@ function ssh_with_title() {
 ###########
 # Aliases #
 ###########
+# TODO: alias for safe rm and ask for replacing during mv/cp
 
 alias ln='ln -fi'
 alias rm='rm -I'
