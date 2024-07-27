@@ -93,33 +93,32 @@ function set_terminal_title() {
 function precmd() {
     set_terminal_title
 }
-# function preexec() { set_terminal_title "$1" }
 
 function ssh_with_title() {
     local host=""
     local skip_next="false"
-    
+
     for arg in "$@"; do
         case "$arg" in
-            -[bcDeFIiLlmOopRSWw]?*)
-                # Option with argument immediately after, like -p22
+        -[bcDeFIiLlmOopRSWw]?*)
+            # Option with argument immediately after, like -p22
+            skip_next="false"
+            ;;
+        -[bcDeFIiLlmOopRSWw])
+            # Option with argument on next iteration
+            skip_next="true"
+            ;;
+        -*)
+            # Any other option, assumed not to take an argument
+            skip_next="false"
+            ;;
+        *)
+            if [ "$skip_next" = "true" ]; then
                 skip_next="false"
-                ;;
-            -[bcDeFIiLlmOopRSWw])
-                # Option with argument on next iteration
-                skip_next="true"
-                ;;
-            -*)
-                # Any other option, assumed not to take an argument
-                skip_next="false"
-                ;;
-            *)
-                if [ "$skip_next" = "true" ]; then
-                    skip_next="false"
-                else
-                    host="${arg#*@}"
-                fi
-                ;;
+            else
+                host="${arg#*@}"
+            fi
+            ;;
         esac
     done
 
