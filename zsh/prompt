@@ -1,19 +1,13 @@
 # vim: set ft=zsh:
 
-# For help with expansion codes, see:
-# - https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
-# For help with parameters, see:
-# - https://zsh.sourceforge.io/Doc/Release/Parameters.html
-
-# shellcheck disable=SC2034
-function prompt_warg_precmd() {
+function _precmd_hook() {
     local -a _status=("${pipestatus[@]}")
-    RPS1=""
+    RPROMPT=""
 
     # Status code
     if [[ ${#${_status//0/}} -gt 0 ]]; then
         # shellcheck disable=SC2296
-        RPS1="$RPS1 %F{red}${(j:|:)_status}%f"
+        RPROMPT="$RPROMPT %F{red}${(j:|:)_status}%f"
     fi
 
     # Python virtualenv
@@ -37,23 +31,29 @@ function prompt_warg_precmd() {
             _venv_name="$_venv_parent"
         fi
 
-        RPS1="$RPS1 %F{yellow}$_venv_name%f"
+        RPROMPT="$RPROMPT %F{yellow}$_venv_name%f"
     fi
 
     # Timestamp
-    RPS1="$RPS1 %8F%D{%H:%M:%S}%f"
+    RPROMPT="$RPROMPT %8F%D{%H:%M:%S}%f"
+
+    export RPROMPT
 }
 
-# shellcheck disable=SC2034
-function prompt_warg_setup() {
-    VIRTUAL_ENV_DISABLE_PROMPT=1
-    prompt_opts=(bang cr sp percent subst)
-    # PS1="%n@%m %~ $ "
-    PS1='%(#.%F{red}.%12F)%n@%m%f %1~ %(#.#.$) '
-    PS2="> "
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
-    add-zsh-hook precmd prompt_warg_precmd
-}
+# https://zsh.sourceforge.io/Doc/Release/Options.html
+setopt PROMPT_BANG
+setopt PROMPT_CR
+setopt PROMPT_SP
+setopt PROMPT_PERCENT
+setopt PROMPT_SUBST
 
+# https://zsh.sourceforge.io/Doc/Release/Parameters.html
+# https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
+export PROMPT='%(#.%F{red}.%12F)%n@%m%f %1~ %(#.#.$) '
+export PROMPT2="> "
 
-prompt_warg_setup "$@"
+# https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions
+typeset -a precmd_functions
+precmd_functions+=(_precmd_hook)

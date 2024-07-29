@@ -28,7 +28,6 @@ setopt INC_APPEND_HISTORY_TIME
 # Ref: https://zsh.sourceforge.io/Doc/Release/Parameters.html
 
 path=("${HOME}/.local/bin" "${path[@]}")
-fpath=("${_here}/functions" "${fpath[@]}")
 export PATH
 export MAIL="/var/spool/mail/$USER"
 export MAILCHECK=60
@@ -144,9 +143,7 @@ alias ssh='ssh_with_title'
 # Prompt #
 ##########
 
-autoload -Uz promptinit
-promptinit
-prompt warg
+source "${_here}/prompt"
 
 ########
 # Misc #
