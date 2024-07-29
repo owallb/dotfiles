@@ -76,7 +76,7 @@ remove_symlink() {
     local link src
     link="${DEST_DIR}/$1"
 
-    if test -s "$link"; then
+    if test -L "$link"; then
         src="$(readlink -f -- "$link")"
         echo "Removing symlink: $link -> $src"
         rm "$link"
@@ -84,7 +84,7 @@ remove_symlink() {
         error "object to be removed is not a symlink:"
         error "${link}: $(stat -c '%F' -- "$link")"
 
-        return 1
+        return
     fi
 }
 
