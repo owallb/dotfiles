@@ -34,9 +34,6 @@ function _precmd_hook() {
         RPROMPT="$RPROMPT %F{yellow}$_venv_name%f"
     fi
 
-    # Timestamp
-    RPROMPT="$RPROMPT %8F%D{%H:%M:%S}%f"
-
     export RPROMPT
 }
 
