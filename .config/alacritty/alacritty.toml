@@ -56,8 +56,8 @@ hide_when_typing = true
 program = "zsh"
 
 [window]
-dynamic_padding = true
 decorations = "None"
+dynamic_padding = false
 
 [window.dimensions]
 columns = 120
