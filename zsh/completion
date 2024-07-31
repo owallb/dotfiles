@@ -1,0 +1,49 @@
+# vim: set ft=zsh:
+
+# See: https://zsh.sourceforge.io/Doc/Release/Options.html#Completion-4
+setopt ALWAYS_TO_END
+setopt COMPLETE_IN_WORD # Allow completion from anywhere in a word, for example `foobar` would get
+                        # completed if the cursor is placed on b in `fbar`
+setopt GLOB_DOTS        # Show hidden files and directories in completion menu
+setopt LIST_TYPES
+
+# See: https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#The-zsh_002fcomplist-Module
+zmodload zsh/complist
+
+# Perform history expansion and insert a space into the buffer. 
+# See: https://zsh.sourceforge.io/Doc/Release/Expansion.html#History-Expansion
+bindkey ' ' magic-space
+
+# https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html#Completion
+bindkey -M menuselect '^[[Z' reverse-menu-complete
+bindkey -M menuselect '^M' .accept-line             # Immediately execute command line on <Enter>
+bindkey -M menuselect '^F' vi-insert                # Toggle interactive mode
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
+
+# See: https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Standard-Styles
+# :completion:<function>:<completer>:<command>:<argument>:<tag>
+zstyle ':completion:*'                  auto-description '%d'
+zstyle ':completion:*'                  cache-path "${_cache_dir:?}/compcache"
+zstyle ':completion:*'                  completer _complete _approximate
+zstyle ':completion:*:descriptions'     format '%F{yellow}-- %d --%f'
+zstyle ':completion:*'                  group-name ''
+zstyle ':completion:*'                  insert-unambiguous true
+# shellcheck disable=SC2296
+zstyle ':completion:*:default'          list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*'                  list-dirs-first true
+zstyle ':completion:*:default'          list-prompt ''
+zstyle ':completion:*'                  matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*:approximate:*'    max-errors 1 numeric
+zstyle ':completion:*:default'          menu true select
+zstyle ':completion:*'                  original false
+zstyle ':completion:*'                  preserve-prefix '//[^/]##/'
+zstyle ':completion:*:default'          select-prompt ''
+zstyle ':completion:*'                  show-ambiguity true
+zstyle ':completion:*'                  squeeze-slashes true
+zstyle ':completion:*'                  use-cache on
+zstyle ':completion:*'                  use-compctl true
+zstyle ':completion:*'                  verbose true
+
+autoload -Uz compinit
+compinit -i -d "${_cache_dir:?}/compdump"

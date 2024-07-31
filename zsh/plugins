@@ -1,4 +1,2 @@
 zsh-users/zsh-completions
-belak/zsh-utils path:completion
-belak/zsh-utils path:utility
-zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting # leave this last
