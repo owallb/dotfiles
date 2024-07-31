@@ -24,6 +24,9 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 setopt INC_APPEND_HISTORY_TIME
 
+# Emacs mode
+bindkey -e
+
 ###################
 # Shell Variables #
 ###################
@@ -46,6 +49,12 @@ export EDITOR="nvim"
 export DIFFPROG="nvim -d"
 export NNN_TRASH=2
 export NNN_PLUG=''
+
+##########
+# Prompt #
+##########
+
+source "${_here}/prompt"
 
 ###########
 # Plugins #
@@ -140,19 +149,6 @@ alias ln='ln -fi'
 alias rm='rm -I'
 alias n='nnn -dHerU'
 alias ssh='ssh_with_title'
-
-##########
-# Prompt #
-##########
-
-source "${_here}/prompt"
-
-########
-# Misc #
-########
-
-# Emacs mode
-bindkey -e
 
 ###########
 # Cleanup #
