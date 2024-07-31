@@ -32,7 +32,6 @@ zstyle ':completion:*'                  insert-unambiguous true
 # shellcheck disable=SC2296
 zstyle ':completion:*:default'          list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*'                  list-dirs-first true
-zstyle ':completion:*:default'          list-prompt ''
 zstyle ':completion:*'                  matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*:approximate:*'    max-errors 1 numeric
 zstyle ':completion:*:default'          menu select
