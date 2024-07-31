@@ -143,8 +143,9 @@ function ssh_with_title() {
 # TODO: alias for safe rm and ask for replacing during mv/cp
 
 alias ln='ln -fi'
-alias rm='rm -I'
+alias ls='ls --color=auto --group-directories-first -vh'
 alias n='nnn -dHerU'
+alias rm='rm -I'
 alias ssh='ssh_with_title'
 
 ###########
