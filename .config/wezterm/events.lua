@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 local M = {}
 
 function M.setup()
-    wezterm.on('format-window-title', function() return "wezterm" end)
+    wezterm.on('format-window-title', function() return "WezTerm" end)
     wezterm.on(
         'format-tab-title',
         function(tab, _, _, _, _, _)
