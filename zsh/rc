@@ -1,4 +1,3 @@
-
 # vim: set ft=zsh nowrap:
 
 _here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
