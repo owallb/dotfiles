@@ -9,7 +9,9 @@ _here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
 
 setopt CORRECT
 setopt INTERACTIVE_COMMENTS
+unsetopt BEEP
 unsetopt NOMATCH
+unsetopt FLOW_CONTROL
 
 # History
 setopt BANG_HIST
