@@ -1,6 +1,11 @@
 # vim: set ft=zsh:
 
 _here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
+_cache_dir="${XDG_CACHE_HOME:-"${HOME}/.cache"}/zsh"
+
+if [[ ! -d "${_cache_dir}" ]]; then
+    mkdir -p "${_cache_dir}"
+fi
 
 ###########
 # Options #
@@ -60,20 +65,12 @@ source "${_here}/prompt"
 # Plugins #
 ###########
 
-if [[ ! -d "${_here}/.cache" ]]; then
-    mkdir "${_here}/.cache"
-fi
-
-_antidote="${_here}/.cache/.antidote"
+_antidote="${_cache_dir}/antidote"
 _plugins="${_here}/plugins"
-_plugins_cache="${_here}/.cache/plugins.zsh"
+_plugins_cache="${_cache_dir}/plugins"
 
 if [[ ! -d "$_antidote" ]]; then
     git clone --depth=1 https://github.com/mattmc3/antidote.git "$_antidote"
-fi
-
-if [[ ! -f "${_plugins}" ]]; then
-    touch "${_plugins}"
 fi
 
 fpath=("${_antidote}/functions" "${fpath[@]}")
@@ -83,7 +80,7 @@ if [[ ! "${_plugins_cache}" -nt "${_plugins}" ]]; then
     antidote bundle <"${_plugins}" >"${_plugins_cache}"
 fi
 
-# shellcheck source=zsh/.cache/plugins.zsh
+# shellcheck disable=SC1090
 source "${_plugins_cache}"
 
 unset _antidote _plugins _plugins_cache
@@ -154,4 +151,4 @@ alias ssh='ssh_with_title'
 # Cleanup #
 ###########
 
-unset _here
+unset _here _cache_dir
