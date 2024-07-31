@@ -35,7 +35,7 @@ zstyle ':completion:*'                  list-dirs-first true
 zstyle ':completion:*:default'          list-prompt ''
 zstyle ':completion:*'                  matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*:approximate:*'    max-errors 1 numeric
-zstyle ':completion:*:default'          menu true select
+zstyle ':completion:*:default'          menu select
 zstyle ':completion:*'                  original false
 zstyle ':completion:*'                  preserve-prefix '//[^/]##/'
 zstyle ':completion:*:default'          select-prompt ''
