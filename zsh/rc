@@ -113,6 +113,57 @@ function precmd() {
     set_terminal_title
 }
 
+function telnet_with_title() {
+    local host port
+    local skip_next="false"
+
+    for arg in "$@"; do
+        case "$arg" in
+        --bind=*)
+            ;&
+        --escape=*)
+            ;&
+        --user=*)
+            ;&
+        --trace=*)
+            ;&
+        -[beln]?*)
+            # Option with argument immediately after, like -blocalhost
+            skip_next="false"
+            ;;
+        --bind)
+            ;&
+        --escape)
+            ;&
+        --user)
+            ;&
+        --trace)
+            ;&
+        -[beln])
+            # Option with argument on next iteration
+            skip_next="true"
+            ;;
+        -*)
+            # Any other option, assumed not to take an argument
+            skip_next="false"
+            ;;
+        *)
+            if [ "$skip_next" = "true" ]; then
+                skip_next="false"
+            elif [ -z "$host" ]; then
+                host="$arg"
+            else
+                port="$arg"
+            fi
+            ;;
+        esac
+    done
+
+    set_terminal_title "${host}:${port}"
+    telnet "$@"
+    set_terminal_title
+}
+
 function ssh_with_title() {
     local host=""
     local skip_next="false"
@@ -157,6 +208,7 @@ alias mv='mv -i'
 alias n='nnn -dHerU'
 alias rm='rm -I'
 alias ssh='ssh_with_title'
+alias telnet='telnet_with_title'
 
 ###########
 # Cleanup #
