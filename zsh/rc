@@ -86,6 +86,9 @@ source "${_here}/completion"
 # Plugins #
 ###########
 
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_MANUAL_REBIND=true
+
 _antidote="${_cache_dir}/antidote"
 _plugins="${_here}/plugins"
 _plugins_cache="${_cache_dir}/plugins"
