@@ -89,6 +89,10 @@ source "${_here}/completion"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 export ZSH_AUTOSUGGEST_MANUAL_REBIND=true
 
+export ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+typeset -A ZSH_HIGHLIGHT_STYLES
+export ZSH_HIGHLIGHT_STYLES[path]='none'
+
 _antidote="${_cache_dir}/antidote"
 _plugins="${_here}/plugins"
 _plugins_cache="${_cache_dir}/plugins"
