@@ -38,7 +38,6 @@ zstyle ':completion:*:default'          menu select
 zstyle ':completion:*'                  original false
 zstyle ':completion:*'                  preserve-prefix '//[^/]##/'
 zstyle ':completion:*:default'          select-prompt ''
-zstyle ':completion:*'                  show-ambiguity true
 zstyle ':completion:*'                  squeeze-slashes true
 zstyle ':completion:*'                  use-cache on
 zstyle ':completion:*'                  use-compctl true
