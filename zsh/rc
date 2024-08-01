@@ -222,6 +222,7 @@ function ssh_with_title() {
 alias cp='cp -i'
 alias ln='ln -fi'
 alias ls='ls --color=auto --group-directories-first -vh'
+alias grep='grep --color=auto'
 alias mv='mv -i'
 alias n='nnn -dHerU'
 alias rm='rm -I'
