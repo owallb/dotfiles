@@ -31,6 +31,7 @@ PKGS=(
     "startx"
     "lf"
     "jq"
+    "fish"
 )
 
 # Define paths to symlink
@@ -42,6 +43,7 @@ SYMLINKS=(
     ".gtkrc-2.0"
     ".config/tmux"
     ".config/alacritty"
+    ".config/fish"
     ".config/i3"
     ".config/i3status"
     ".config/rofi"
