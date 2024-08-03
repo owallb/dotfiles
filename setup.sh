@@ -19,42 +19,42 @@ ERROR=false
 # Define packages
 typeset -a PKGS
 PKGS=(
-    "zsh"
-    "tmux"
     "alacritty"
-    "i3"
-    "i3status"
-    "i3lock"
-    "picom"
     "dunst"
+    "fish"
+    "i3"
+    "i3lock"
+    "i3status"
+    "jq"
+    "lf"
+    "picom"
     "rofi"
     "startx"
-    "lf"
-    "jq"
-    "fish"
+    "tmux"
+    "zsh"
 )
 
 # Define paths to symlink
 typeset -a SYMLINKS
 SYMLINKS=(
-    ".Xresources"
-    ".xinitrc"
-    ".xinit-scripts"
-    ".gtkrc-2.0"
-    ".config/tmux"
     ".config/alacritty"
-    ".config/fish"
-    ".config/i3"
-    ".config/i3status"
-    ".config/rofi"
-    ".config/picom"
     ".config/dunst"
-    ".config/lf"
+    ".config/fish"
     ".config/gtk-3.0"
     ".config/gtk-4.0"
+    ".config/i3"
+    ".config/i3status"
+    ".config/lf"
+    ".config/picom"
+    ".config/rofi"
+    ".config/tmux"
     ".config/yay"
     ".local/bin"
     ".local/share/fonts"
+    ".gtkrc-2.0"
+    ".xinit-scripts"
+    ".xinitrc"
+    ".Xresources"
 )
 
 typeset -A SYMLINK_MAP
