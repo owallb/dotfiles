@@ -26,7 +26,6 @@ bindkey '^N' history-beginning-search-forward
 zstyle ':completion:*'                  auto-description '%d'
 zstyle ':completion:*'                  cache-path "${_cache_dir:?}/compcache"
 zstyle ':completion:*'                  completer _complete _approximate
-zstyle ':completion:*:descriptions'     format '%F{yellow}-- %d --%f'
 zstyle ':completion:*'                  group-name ''
 zstyle ':completion:*'                  insert-unambiguous true
 # shellcheck disable=SC2296
