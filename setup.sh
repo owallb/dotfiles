@@ -87,7 +87,7 @@ remove_symlink() {
         error "object to be removed is not a symlink:"
         error "${link}: $(stat -c '%F' -- "$link")"
 
-        return
+        return 1
     fi
 }
 
@@ -107,13 +107,13 @@ create_symlink() {
     if test -z "$1"; then
         error "missing src argument:"
         error "$0 $1 $2"
-        return
+        return 1
     fi
 
     if test -z "$2"; then
         error "missing dst argument:"
         error "$0 $1 $2"
-        return
+        return 1
     fi
 
     src="${SCRIPT_DIR}/$1"
@@ -123,7 +123,7 @@ create_symlink() {
     if ! test -e "$src"; then
         error "the following source path does not exist:"
         error "$src"
-        return
+        return 1
     fi
     
     if ! test -d "$dst_parent"; then
@@ -133,20 +133,24 @@ create_symlink() {
 
     if test -L "$dst"; then
         if $FORCE; then
-            remove_symlink "$2"
+            if test "$(readlink -f "$dst")" != "$src"; then
+                remove_symlink "$2"
+            else
+                return 0
+            fi
         elif $IGNORE_EXISTING; then
-            return
+            return 0
         else
             error "path already exists:"
             error "$dst"
-            return
+            return 1
         fi
     elif test -e "$dst"; then
         error "path already exists and is not a symlink:"
         error "${dst}: $(stat -c '%F' -- "$dst")"
-        return
+        return 1
     fi
-    
+
     echo "Creating link: $dst -> $src"
     ln -s "$src" "$dst"
 }
@@ -164,10 +168,7 @@ create_all_symlinks() {
 check_terminfo() {
     if ! infocmp tmux-256color > /dev/null; then
         error "Missing terminfo for tmux-256color. Try installing ncurses-term."
-    fi
-
-    if $ERROR; then
-        exit 1
+        return 1
     fi
 }
 
