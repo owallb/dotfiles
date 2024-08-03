@@ -130,7 +130,7 @@ create_symlink() {
         mkdir -p "$dst_parent"
     fi
 
-    if test -s "$dst"; then
+    if test -L "$dst"; then
         if $IGNORE_EXISTING; then
             remove_symlink "$2"
         else
