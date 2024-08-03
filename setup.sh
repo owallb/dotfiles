@@ -12,6 +12,7 @@ SOURCE_DIR="$SCRIPT_DIR"
 DEST_DIR="$HOME"
 
 PRINT_HELP=false
+FORCE=false
 REMOVE_EXISTING=false
 IGNORE_EXISTING=false
 ERROR=false
@@ -131,8 +132,10 @@ create_symlink() {
     fi
 
     if test -L "$dst"; then
-        if $IGNORE_EXISTING; then
+        if $FORCE; then
             remove_symlink "$2"
+        elif $IGNORE_EXISTING; then
+            return
         else
             error "path already exists:"
             error "$dst"
@@ -173,15 +176,20 @@ print_help() {
     echo "Usage: $SCRIPT_NAME [...]"
     echo ""
     echo "Options:"
-    echo "    -h, --help             Print this help message"
-    echo "    -i, --ignore-existing  Ignore existing symlinks"
-    echo "    -r, --remove-existing  Remove any existing symlinks"
+    echo "    -h, --help                Print this help message"
+    echo "    -f, --force               Overwrite any existing links"
+    echo "    -i, --ignore-existing     Ignore existing symlinks"
+    echo "    -r, --remove-existing     Remove any existing symlinks"
 }
 
 while [ $# -gt 0 ]; do
     case $1 in
         -h|--help)
             PRINT_HELP=true
+            shift
+            ;;
+        -f|--force)
+            FORCE=true
             shift
             ;;
         -r|--remove-existing)
