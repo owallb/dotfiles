@@ -4,8 +4,6 @@ local fonts = {}
 
 local family = "Iosevka Custom"
 
--- Automatically includes fallback for nerd font symbols,
--- so it doesn't require a patched font.
 fonts.regular = wezterm.font({
     family = family,
     weight = "Regular",
