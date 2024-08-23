@@ -41,6 +41,7 @@ SYMLINKS=(
     ".config/alacritty"
     ".config/dunst"
     ".config/fish"
+    ".config/frogminer"
     ".config/gtk-3.0"
     ".config/gtk-4.0"
     ".config/i3"
