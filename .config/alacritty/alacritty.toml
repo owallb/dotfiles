@@ -59,8 +59,10 @@ hide_when_typing = true
 program = "zsh"
 
 [window]
-decorations = "None"
+decorations = "Full"
 dynamic_padding = false
+dynamic_title = false
+title = "Terminal"
 
 [window.dimensions]
 columns = 220
