@@ -1,0 +1,14 @@
+MenuBar=Disabled
+
+[DetailsMode]
+ExpandableFolders=false
+PreviewSize=16
+
+[General]
+EditableUrl=true
+ShowFullPath=true
+ShowFullPathInTitlebar=true
+
+[MainWindow]
+MenuBar=Disabled
+ToolBarsMovable=Disabled

@@ -39,6 +39,7 @@ PKGS=(
 typeset -a SYMLINKS
 SYMLINKS=(
     ".config/alacritty"
+    ".config/dolphinrc"
     ".config/dunst"
     ".config/fish"
     ".config/frogminer"
