@@ -141,12 +141,12 @@ create_symlink() {
         elif $IGNORE_EXISTING; then
             return 0
         else
-            error "path already exists:"
+            error "symbolic link already exists:"
             error "$dst"
             return 1
         fi
     elif test -e "$dst"; then
-        error "path already exists and is not a symlink:"
+        error "path already exists that is not a symlink:"
         error "${dst}: $(stat -c '%F' -- "$dst")"
         return 1
     fi
