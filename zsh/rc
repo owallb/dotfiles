@@ -38,7 +38,7 @@ bindkey -e
 ###################
 # Ref: https://zsh.sourceforge.io/Doc/Release/Parameters.html
 
-path=("${HOME}/.local/bin" "${HOME}/go/bin" "${path[@]}")
+path=("${HOME}/.local/bin" "${HOME}/go/bin" "${HOME}/.cargo/bin" "${path[@]}")
 export MAIL="/var/spool/mail/$USER"
 export MAILCHECK=60
 export HISTFILE="${HOME}/.zsh_history"
