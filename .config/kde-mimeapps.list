@@ -1,3 +1,4 @@
+# vim: set ft=dosini:
 [Default Applications]
 application/json=org.kde.kwrite.desktop;
 application/pdf=firefox.desktop;
