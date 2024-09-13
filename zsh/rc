@@ -118,6 +118,10 @@ unset _antidote _plugins _plugins_cache
 # Ref: https://zsh.sourceforge.io/Doc/Release/Functions.html#Functions
 
 function set_terminal_title() {
+    if [ -n "$SSH_CLIENT" ]; then
+        return
+    fi
+
     local title
     if [ -z "$1" ]; then
         title=$(basename "$(print -P "%~")")
