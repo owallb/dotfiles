@@ -4,7 +4,7 @@
 set preview false
 set ratios 1
 set hidden true
-set info mode:user:group:size:time
+set info perm:user:group:size:time
 set promptfmt "\033[34;1m%d\033[0m"
 set incsearch true
 set incfilter true
