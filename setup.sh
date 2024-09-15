@@ -47,7 +47,6 @@ SYMLINKS=(
     ".config/i3status"
     ".config/lf"
     ".config/kde-mimeapps.list"
-    ".config/kglobalshortcutsrc"
     ".config/picom"
     ".config/rofi"
     ".config/tmux"
