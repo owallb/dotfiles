@@ -43,8 +43,6 @@ SYMLINKS=(
     ".config/dunst"
     ".config/fish"
     ".config/frogminer"
-    ".config/gtk-3.0"
-    ".config/gtk-4.0"
     ".config/i3"
     ".config/i3status"
     ".config/lf"
@@ -57,10 +55,16 @@ SYMLINKS=(
     ".local/bin"
     ".local/share/fonts"
     ".local/share/konsole"
-    ".gtkrc-2.0"
     ".xinit-scripts"
     ".xinitrc"
     ".Xresources"
+)
+
+typeset -a COPIES
+COPIES=(
+    ".config/gtk-3.0"
+    ".config/gtk-4.0"
+    ".gtkrc-2.0"
 )
 
 typeset -A SYMLINK_MAP
@@ -160,6 +164,46 @@ create_symlink() {
     ln -s "$src" "$dst"
 }
 
+copy_item() {
+    local src dst dst_parent
+
+    if test -z "$1"; then
+        error "missing src argument:"
+        error "$0 $1 $2"
+        return 1
+    fi
+
+    if test -z "$2"; then
+        error "missing dst argument:"
+        error "$0 $1 $2"
+        return 1
+    fi
+
+    src="${SCRIPT_DIR}/$1"
+    dst="${DEST_DIR}/$2"
+    dst_parent="$(dirname -- "$dst")"
+    
+    if ! test -e "$src"; then
+        error "the following source path does not exist:"
+        error "$src"
+        return 1
+    fi
+    
+    if ! test -d "$dst_parent"; then
+        echo "Creating $dst_parent"
+        mkdir -p "$dst_parent"
+    fi
+
+    if test -e "$dst"; then
+        error "path already exists:"
+        error "${dst}"
+        return 1
+    fi
+
+    echo "Copying item: from $src to ${dst_parent}/"
+    cp -r "$src" "${dst_parent}/"
+}
+
 create_all_symlinks() {
     for link in "${SYMLINKS[@]}"; do
         create_symlink "$link" "$link"
@@ -167,6 +211,12 @@ create_all_symlinks() {
 
     for src dst in ${(kv)SYMLINK_MAP}; do
         create_symlink "$src" "$dst"
+    done
+}
+
+copy_all_items() {
+    for item in "${COPIES[@]}"; do
+        copy_item "$item" "$item"
     done
 }
 
@@ -222,6 +272,7 @@ else
     check_terminfo
     check_packages_installed
     create_all_symlinks
+    copy_all_items
 fi
 
 if $ERROR; then
