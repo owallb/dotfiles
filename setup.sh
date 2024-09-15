@@ -55,6 +55,7 @@ SYMLINKS=(
     ".config/yay"
     ".local/bin"
     ".local/share/fonts"
+    ".local/share/konsole"
     ".gtkrc-2.0"
     ".xinit-scripts"
     ".xinitrc"
