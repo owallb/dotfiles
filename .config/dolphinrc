@@ -7,8 +7,16 @@ PreviewSize=16
 [General]
 EditableUrl=true
 ShowFullPath=true
-ShowFullPathInTitlebar=true
+Version=202
+ViewPropsTimestamp=2024,8,26,16,47,20.342
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
 
 [MainWindow]
 MenuBar=Disabled
 ToolBarsMovable=Disabled
+
+[PreviewSettings]
+Plugins=comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,svgthumbnail,fontthumbnail,windowsimagethumbnail,imagethumbnail,opendocumentthumbnail,jpegthumbnail,directorythumbnail,windowsexethumbnail,kraorathumbnail,exrthumbnail,appimagethumbnail,audiothumbnail
