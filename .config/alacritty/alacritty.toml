@@ -46,7 +46,7 @@ text = "#080808"
 TERM = "xterm-256color"
 
 [font]
-size = 11
+size = 12
 
 [font.normal]
 family = "Iosevka Custom"
