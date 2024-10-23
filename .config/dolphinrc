@@ -6,6 +6,7 @@ PreviewSize=16
 
 [General]
 EditableUrl=true
+OpenExternallyCalledFolderInNewTab=true
 ShowFullPath=true
 Version=202
 ViewPropsTimestamp=2024,8,26,16,47,20.342
