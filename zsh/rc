@@ -55,6 +55,7 @@ export EDITOR="nvim"
 export DIFFPROG="nvim -d"
 export NNN_TRASH=2
 export NNN_PLUG=''
+export MESA_WHICH_LLVM=1
 
 #############
 # LS_COLORS #
