@@ -111,22 +111,25 @@ remove_all_symlinks() {
 }
 
 create_symlink() {
-    local src dst dst_parent
+    local rel_src rel_dst src dst dst_parent
 
-    if test -z "$1"; then
+    rel_src="$1"
+    rel_dst="$2"
+
+    if test -z "$rel_src"; then
         error "missing src argument:"
-        error "$0 $1 $2"
+        error "$0 $@"
         return 1
     fi
 
-    if test -z "$2"; then
+    if test -z "$rel_dst"; then
         error "missing dst argument:"
-        error "$0 $1 $2"
+        error "$0 $@"
         return 1
     fi
 
-    src="${SCRIPT_DIR}/$1"
-    dst="${DEST_DIR}/$2"
+    src="${SCRIPT_DIR}/$rel_src"
+    dst="${DEST_DIR}/$rel_dst"
     dst_parent="$(dirname -- "$dst")"
     
     if ! test -e "$src"; then
@@ -136,7 +139,7 @@ create_symlink() {
     fi
     
     if ! test -d "$dst_parent"; then
-        echo "Creating $dst_parent"
+        echo "Creating parent: $dst_parent"
         mkdir -p "$dst_parent"
     fi
 
@@ -160,7 +163,7 @@ create_symlink() {
         return 1
     fi
 
-    echo "Creating link: $dst -> $src"
+    echo "Creating link: $dst -> $rel_src"
     ln -s "$src" "$dst"
 }
 
@@ -173,22 +176,25 @@ remove_path() {
 }
 
 copy_item() {
-    local src dst dst_parent
+    local rel_src rel_dst src dst dst_parent
 
-    if test -z "$1"; then
+    rel_src="$1"
+    rel_dst="$2"
+
+    if test -z "$rel_src"; then
         error "missing src argument:"
-        error "$0 $1 $2"
+        error "$0 $@"
         return 1
     fi
 
-    if test -z "$2"; then
+    if test -z "$rel_dst"; then
         error "missing dst argument:"
-        error "$0 $1 $2"
+        error "$0 $@"
         return 1
     fi
 
-    src="${SCRIPT_DIR}/$1"
-    dst="${DEST_DIR}/$2"
+    src="${SCRIPT_DIR}/$rel_src"
+    dst="${DEST_DIR}/$rel_dst"
     dst_parent="$(dirname -- "$dst")"
     
     if ! test -e "$src"; then
@@ -198,7 +204,7 @@ copy_item() {
     fi
     
     if ! test -d "$dst_parent"; then
-        echo "Creating $dst_parent"
+        echo "Creating parent: $dst_parent"
         mkdir -p "$dst_parent"
     fi
 
@@ -214,7 +220,7 @@ copy_item() {
         fi
     fi
 
-    echo "Copying item: from $src to ${dst_parent}/"
+    echo "Copying item: from $rel_src to ${dst_parent}/"
     cp -r "$src" "${dst_parent}/"
 }
 
