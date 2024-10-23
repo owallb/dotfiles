@@ -42,6 +42,7 @@ SYMLINKS=(
     ".config/dolphinrc"
     ".config/dunst"
     ".config/fish"
+    ".config/foot"
     ".config/frogminer"
     ".config/i3"
     ".config/i3status"
