@@ -164,6 +164,14 @@ create_symlink() {
     ln -s "$src" "$dst"
 }
 
+remove_path() {
+    local target
+    target="$1"
+
+    echo "Trashing item: $target"
+    gio trash "$target"
+}
+
 copy_item() {
     local src dst dst_parent
 
@@ -195,9 +203,15 @@ copy_item() {
     fi
 
     if test -e "$dst"; then
-        error "path already exists:"
-        error "${dst}"
-        return
+        if $FORCE; then
+            remove_path "$dst"
+        elif $IGNORE_EXISTING; then
+            return 0
+        else
+            error "path already exists:"
+            error "${dst}"
+            return 1
+        fi
     fi
 
     echo "Copying item: from $src to ${dst_parent}/"
