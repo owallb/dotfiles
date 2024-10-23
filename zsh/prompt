@@ -1,6 +1,6 @@
 # vim: set ft=zsh:
 
-function _precmd_hook() {
+function _set_rprompt() {
     local -a _status=("${pipestatus[@]}")
     RPROMPT=""
 
@@ -48,9 +48,12 @@ setopt PROMPT_SUBST
 
 # https://zsh.sourceforge.io/Doc/Release/Parameters.html
 # https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html
-export PROMPT='%(#.%F{red}.%12F)%n@%m%f %1~ %(#.#.$) '
+PROMPT='%(#.%F{red}.%12F)%n@%m%f %1~ %(#.#.$) '
+PROMPT_START=$'%{\e]133;A\a%}'
+PROMPT_END=$'%{\e]133;B\a%}'
+export PROMPT=${PROMPT_START}${PROMPT}${PROMPT_END}
 export PROMPT2="> "
 
 # https://zsh.sourceforge.io/Doc/Release/Functions.html#Hook-Functions
 typeset -a precmd_functions
-precmd_functions+=(_precmd_hook)
+precmd_functions+=(_set_rprompt)
