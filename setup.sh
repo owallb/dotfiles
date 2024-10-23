@@ -197,7 +197,7 @@ copy_item() {
     if test -e "$dst"; then
         error "path already exists:"
         error "${dst}"
-        return 1
+        return
     fi
 
     echo "Copying item: from $src to ${dst_parent}/"
