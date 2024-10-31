@@ -52,6 +52,7 @@ SYMLINKS=(
     ".config/picom"
     ".config/rofi"
     ".config/tmux"
+    ".config/wezterm"
     ".config/yay"
     ".local/bin"
     ".local/share/fonts"
