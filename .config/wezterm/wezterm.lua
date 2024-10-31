@@ -10,12 +10,15 @@ local ENABLE_MULTIPLEXING = false
 -- General settings
 
 config.window_padding = {
-    left = 6,
-    right = 6,
-    top = 6,
-    bottom = 6,
+    left = 5,
+    right = 5,
+    top = 5,
+    bottom = 5,
 }
 config.audible_bell = "Disabled"
+config.warn_about_missing_glyphs = false
+config.initial_cols = 179
+config.initial_rows = 60
 -- Settings below get overriden if multiplexing is enabled
 config.window_decorations = "TITLE|RESIZE"
 config.enable_tab_bar = false
@@ -39,7 +42,7 @@ config.color_scheme = "moonfly"
 local fonts = require("fonts")
 
 config.font = fonts.regular
-config.font_size = 11
+config.font_size = 12
 config.font_rules = {
     fonts.rules.italic,
     fonts.rules.bold,
