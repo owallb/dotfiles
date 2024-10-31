@@ -49,6 +49,7 @@ SYMLINKS=(
     ".config/lf"
     ".config/kde-mimeapps.list"
     ".config/kglobalshortcutsrc"
+    ".config/klipperrc"
     ".config/picom"
     ".config/rofi"
     ".config/tmux"
