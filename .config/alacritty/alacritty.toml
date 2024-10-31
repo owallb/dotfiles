@@ -55,7 +55,7 @@ style = "Regular"
 [mouse]
 hide_when_typing = true
 
-[shell]
+[terminal.shell]
 program = "zsh"
 
 [window]
