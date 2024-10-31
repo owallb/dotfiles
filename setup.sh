@@ -56,6 +56,7 @@ SYMLINKS=(
     ".local/bin"
     ".local/share/fonts"
     ".local/share/konsole"
+    ".vimrc"
     ".xinit-scripts"
     ".xinitrc"
     ".Xresources"
