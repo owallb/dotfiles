@@ -44,6 +44,7 @@ SYMLINKS=(
     ".config/fish"
     ".config/foot"
     ".config/frogminer"
+    ".config/ghostty"
     ".config/i3"
     ".config/i3status"
     ".config/lf"
