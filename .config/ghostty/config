@@ -10,4 +10,5 @@ title = Terminal
 window-width = 177
 window-height = 60
 window-padding-balance = true
+window-decoration = server
 confirm-close-surface = false
