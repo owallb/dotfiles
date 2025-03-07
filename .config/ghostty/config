@@ -13,3 +13,4 @@ window-padding-x = 2
 window-padding-y = 1
 window-decoration = server
 confirm-close-surface = false
+link-url = true
