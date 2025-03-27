@@ -53,6 +53,7 @@ SYMLINKS=(
     ".config/klipperrc"
     ".config/picom"
     ".config/rofi"
+    ".config/strawberry"
     ".config/tmux"
     ".config/wezterm"
     ".config/yay"
