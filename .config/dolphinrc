@@ -1,8 +1,16 @@
 MenuBar=Disabled
 
+[$Version]
+update_info=dolphin_detailsmodesettings.upd:rename-leading-padding,dolphin_detailsmodesettings.upd:move-content-display,dolphin_directorysizemode.upd:convert-directorysizecount-to-directorysizemode
+
 [DetailsMode]
 ExpandableFolders=false
 PreviewSize=16
+
+[ExtractDialog]
+2 screens: Height=720
+2 screens: Width=1576
+DirHistory[$e]=$HOME/Downloads/protondrive/
 
 [General]
 EditableUrl=true
@@ -17,7 +25,6 @@ Places Icons Static Size=22
 
 [MainWindow]
 MenuBar=Disabled
-ToolBarsMovable=Disabled
 
 [PreviewSettings]
 Plugins=comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,svgthumbnail,fontthumbnail,windowsimagethumbnail,imagethumbnail,opendocumentthumbnail,jpegthumbnail,directorythumbnail,windowsexethumbnail,kraorathumbnail,exrthumbnail,appimagethumbnail,audiothumbnail
