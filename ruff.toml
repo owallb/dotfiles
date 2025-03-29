@@ -1,0 +1,42 @@
+line-length = 80
+target-version = "py313"
+preview = true
+
+[lint]
+select = [
+    "YTT",
+    "ANN",
+    "ASYNC",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "T10",
+    "FIX",
+    "FA",
+    "ISC",
+    "PIE",
+    "PYI",
+    "PT",
+    "RET",
+    "SIM",
+    "TC",
+    "I",
+    "C90",
+    "DOC",
+    "D",
+    "F",
+    "PL",
+    "UP",
+    "RUF"
+]
+ignore = [
+    "D203",
+    "D301",
+    "D101",
+    "D202",
+    "TC006",
+    "COM812"
+]
+
