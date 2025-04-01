@@ -1,0 +1,25 @@
+[Compositing]
+AllowTearing=false
+
+[EdgeBarrier]
+EdgeBarrier=0
+
+[Effect-hidecursor]
+InactivityDuration=3
+
+[MouseBindings]
+CommandWindow3=Activate, raise and pass click
+
+[Plugins]
+hidecursorEnabled=true
+scripts=trigger-attention
+
+[TabBox]
+HighlightWindows=false
+
+[Tiling]
+padding=4
+
+[Xwayland]
+Scale=1
+
