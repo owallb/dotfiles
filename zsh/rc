@@ -4,7 +4,7 @@
 _here="$(dirname -- "$(readlink -f -- "${HOME}/.zshrc")")"
 _cache_dir="${XDG_CACHE_HOME:-"${HOME}/.cache"}/zsh"
 
-if [[ ! -d "${_cache_dir}" ]]; then
+if [[ ! -d ${_cache_dir} ]]; then
     mkdir -p "${_cache_dir}"
 fi
 
@@ -64,7 +64,7 @@ export MESA_WHICH_LLVM=1
 _dircolors="${_cache_dir}/dircolors"
 
 if [ ! -e "$_dircolors" ]; then
-    dircolors -b > "$_dircolors"
+    dircolors -b >"$_dircolors"
 fi
 
 source "$_dircolors"
@@ -98,14 +98,14 @@ _antidote="${_cache_dir}/antidote"
 _plugins="${_here}/plugins"
 _plugins_cache="${_cache_dir}/plugins"
 
-if [[ ! -d "$_antidote" ]]; then
+if [[ ! -d $_antidote ]]; then
     git clone --depth=1 https://github.com/mattmc3/antidote.git "$_antidote"
 fi
 
 fpath=("${_antidote}/functions" "${fpath[@]}")
 autoload -Uz antidote
 
-if [[ ! "${_plugins_cache}" -nt "${_plugins}" ]]; then
+if [[ ! ${_plugins_cache} -nt ${_plugins} ]]; then
     antidote bundle <"${_plugins}" >"${_plugins_cache}"
 fi
 
@@ -119,17 +119,42 @@ unset _antidote _plugins _plugins_cache
 # Ref: https://zsh.sourceforge.io/Doc/Release/Functions.html#Functions
 
 function set_terminal_title() {
-    if [ -n "$SSH_CLIENT" ]; then
-        return
+    local title cwd host extra
+    local -a parts
+
+    extra="$1"
+
+    parts=()
+    if [ -n "$SSH_CONNECTION" ] && [ -z "$TMUX" ]; then
+        local -a tmp
+        tmp=("${=SSH_CONNECTION}")
+        host=${tmp[3]}
+        parts+=("$host")
     fi
 
-    local title
-    if [ -z "$1" ]; then
-        title=$(basename "$(print -P "%~")")
+    if [ "$PWD" = "$HOME" ]; then
+        cwd="~"
     else
-        title="$1"
+        cwd="${PWD##*/}"
     fi
+    parts+=("$cwd")
+
+    if [ -n "$extra" ]; then
+        parts+=("$extra")
+    fi
+
+    # shellcheck disable=SC2296
+    title="${(j|:|)parts}"
+
     echo -ne "\033]2;$title\033\\"
+}
+
+function preexec() {
+    local cmd
+
+    cmd=${1%% *}
+
+    set_terminal_title "$cmd"
 }
 
 function precmd() {
@@ -142,26 +167,18 @@ function telnet_with_title() {
 
     for arg in "$@"; do
         case "$arg" in
-        --bind=*)
-            ;&
-        --escape=*)
-            ;&
-        --user=*)
-            ;&
-        --trace=*)
-            ;&
+        --bind=*) ;&
+        --escape=*) ;&
+        --user=*) ;&
+        --trace=*) ;&
         -[beln]?*)
             # Option with argument immediately after, like -blocalhost
             skip_next="false"
             ;;
-        --bind)
-            ;&
-        --escape)
-            ;&
-        --user)
-            ;&
-        --trace)
-            ;&
+        --bind) ;&
+        --escape) ;&
+        --user) ;&
+        --trace) ;&
         -[beln])
             # Option with argument on next iteration
             skip_next="true"
@@ -182,7 +199,7 @@ function telnet_with_title() {
         esac
     done
 
-    set_terminal_title "${host}:${port}"
+    echo -ne "\033]2;${host}:${port}\033\\"
     telnet "$@"
     set_terminal_title
 }
@@ -215,7 +232,7 @@ function ssh_with_title() {
         esac
     done
 
-    set_terminal_title "$host"
+    echo -ne "\033]2;${host}\033\\"
     ssh "$@"
     set_terminal_title
 }
