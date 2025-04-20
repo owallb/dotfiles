@@ -151,8 +151,14 @@ function set_terminal_title() {
 
 function preexec() {
     local cmd
+    local -a parts
 
-    cmd=${1%% *}
+    parts=("${=1}")
+    if [ "${parts[1]}" = "sudo" ]; then
+        cmd="${parts[2]}"
+    else
+        cmd="${parts[1]}"
+    fi
 
     set_terminal_title "$cmd"
 }
