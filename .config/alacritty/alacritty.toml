@@ -42,9 +42,6 @@ text = "#080808"
 cursor = "#b2ceee"
 text = "#080808"
 
-[env]
-TERM = "xterm-256color"
-
 [font]
 size = 12
 
@@ -65,8 +62,8 @@ dynamic_title = false
 title = "Terminal"
 
 [window.dimensions]
-columns = 177
-lines = 62
+columns = 179
+lines = 60
 
 [window.padding]
 x = 3
