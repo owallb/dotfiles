@@ -51,6 +51,7 @@ SYMLINKS=(
     ".config/kde-mimeapps.list"
     ".config/kglobalshortcutsrc"
     ".config/klipperrc"
+    ".config/kwinrc"
     ".config/picom"
     ".config/rofi"
     ".config/strawberry"
