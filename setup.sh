@@ -58,6 +58,7 @@ SYMLINKS=(
     ".config/tmux"
     ".config/wezterm"
     ".config/yay"
+    ".config/zed"
     ".local/bin"
     ".local/share/fonts"
     ".local/share/konsole"
@@ -138,13 +139,13 @@ create_symlink() {
     src="${SCRIPT_DIR}/$rel_src"
     dst="${DEST_DIR}/$rel_dst"
     dst_parent="$(dirname -- "$dst")"
-    
+
     if ! test -e "$src"; then
         error "the following source path does not exist:"
         error "$src"
         return 1
     fi
-    
+
     if ! test -d "$dst_parent"; then
         echo "Creating parent: $dst_parent"
         mkdir -p "$dst_parent"
@@ -203,13 +204,13 @@ copy_item() {
     src="${SCRIPT_DIR}/$rel_src"
     dst="${DEST_DIR}/$rel_dst"
     dst_parent="$(dirname -- "$dst")"
-    
+
     if ! test -e "$src"; then
         error "the following source path does not exist:"
         error "$src"
         return 1
     fi
-    
+
     if ! test -d "$dst_parent"; then
         echo "Creating parent: $dst_parent"
         mkdir -p "$dst_parent"

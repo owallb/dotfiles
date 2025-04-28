@@ -1,0 +1,48 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "t n": "workspace::NewFile",
+      "t q": "pane::CloseActiveItem",
+      "space f e": "project_panel::ToggleFocus",
+      "space f f": "file_finder::Toggle",
+      "space f g": "workspace::NewSearch",
+      "space g g": "git_panel::ToggleFocus",
+      "space g d": "git::Diff"
+    }
+  },
+  {
+    "context": "GitPanel",
+    "bindings": {
+      "c c": "git_panel::FocusEditor"
+    }
+  },
+  {
+    "context": "GitDiff",
+    "bindings": {
+      "space g s": "git::StageAndNext",
+      "space g u": "git::UnstageAndNext",
+      "space g c": "git::Commit",
+      "space g a": "git::Amend"
+    }
+  }
+]
