@@ -94,6 +94,8 @@ map <Leader>P "+P
 
 map <Leader>dp :diffput<CR>
 map <Leader>do :diffget<CR>
+xmap <Leader>dp :diffput<CR>
+xmap <Leader>do :diffget<CR>
 nmap <Leader>gd :Gdiffsplit<CR>
 nmap <Leader>gc :G commit<CR>
 nmap <Leader>ga :G commit --amend<CR>
