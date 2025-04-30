@@ -76,6 +76,9 @@ set updatetime=100
 set hidden
 set incsearch
 set jumpoptions=stack
+set statusline=\ %m\%=
+            \%-5.5{&filetype}\ %-6.6{&fileencoding}\ %-4.4{&fileformat}
+            \\ %4.4(%p%%%)%5.5l:%-3.3v
 
 syntax on
 filetype plugin indent on
@@ -543,19 +546,6 @@ nmap <Leader>gl :Flog<CR>
 
 " {{{1 Statusline
 
-execute 'highlight default GitStatusAdd guifg='
-    \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
-    \ . ' guibg='
-    \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
-execute 'highlight GitStatusChange guifg='
-    \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
-    \ . ' guibg='
-    \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
-execute 'highlight GitStatusDelete guifg='
-    \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
-    \ . ' guibg='
-    \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
-
 function! GitStatus()
     let [a,m,r] = GitGutterGetHunkSummary()
     let parts = []
@@ -579,9 +569,28 @@ function! GitStatus()
     return ' ' . join(parts, ' ')
 endfunction
  
-            " \%{coc#status()}%{get(b:,'coc_current_function','')}
-set statusline=\ %f%{%GitStatus()%}\ %m
-    \%=
-    \%-5.5{&filetype}\ %-6.6{&fileencoding}\ %-4.4{&fileformat}
-    \\ %4.4(%p%%%)%5.5l:%-3.3v
+function! s:SetupGitGutter()
+    if !exists('g:loaded_gitgutter')
+        return
+    endif
 
+    execute 'highlight default GitStatusAdd guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+    execute 'highlight GitStatusChange guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+    execute 'highlight GitStatusDelete guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+
+    set statusline=\ %f%{%GitStatus()%}\ %m
+        \%=
+        \%-5.5{&filetype}\ %-6.6{&fileencoding}\ %-4.4{&fileformat}
+        \\ %4.4(%p%%%)%5.5l:%-3.3v
+endfunction
+
+autocmd VimEnter * call s:SetupGitGutter()
