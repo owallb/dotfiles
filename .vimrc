@@ -199,20 +199,14 @@ command! W write
 
 " {{{1 Plugins
 " {{{2 Plugin variables
-" {{{3 Moonfly
 
-let g:moonflyNormalFloat = v:true
-let g:moonflyCursorColor = v:true
-let g:moonflyWinSeparator = 2
-let g:moonflyVirtualTextColor = v:true
-
-" {{{2 GitGutter
+" {{{3 GitGutter
 
 let g:gitgutter_sign_added = '┃'
 let g:gitgutter_sign_modified = '┃'
 let g:gitgutter_sign_removed = '┃'
 
-" {{{2 Colorizer
+" {{{3 Colorizer
 
 let g:colorizer_colornames = 0
 
@@ -226,7 +220,7 @@ endif
 
 let s:plug_dir = expand('$HOME/.vim/plugged')
 call plug#begin(s:plug_dir)
-    Plug 'bluz71/vim-moonfly-colors', { 'as': 'moonfly' }
+    Plug 'joshdick/onedark.vim'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-fugitive'
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -260,12 +254,7 @@ call plug#end()
 
 " {{{2 Colorscheme
 
-augroup CustomHighlight
-    autocmd!
-    autocmd ColorScheme moonfly highlight VertSplit term=none cterm=none
-augroup END
-
-silent! colorscheme moonfly
+silent! colorscheme onedark
 
 " {{{2 Fzf
 
