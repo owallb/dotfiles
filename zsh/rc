@@ -61,13 +61,8 @@ export MESA_WHICH_LLVM=1
 # LS_COLORS #
 #############
 
-_dircolors="${_cache_dir}/dircolors"
-
-if [ ! -e "$_dircolors" ]; then
-    dircolors -b >"$_dircolors"
-fi
-
-source "$_dircolors"
+_dircolors="${_here}/dircolors"
+eval "$(dircolors -b "$_dircolors")"
 
 unset _dircolors
 
