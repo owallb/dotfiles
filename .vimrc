@@ -225,6 +225,11 @@ let g:NERDTreeRemoveDirCmd = "gio trash "
 let g:NERDTreeMapActivateNode = "l"
 let g:NERDTreeMapCloseDir = "h"
 
+" {{{3 onedark
+let g:onedark_color_overrides = {
+            \ "background": {"gui": "#1f2329" },
+            \}
+
 " {{{2 Install
 let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
 if !filereadable(s:plug_file)
