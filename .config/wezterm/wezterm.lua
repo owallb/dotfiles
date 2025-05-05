@@ -32,7 +32,6 @@ else
     config.default_prog = { "zsh" }
 end
 
-
 -- Colors
 
 config.color_scheme = "moonfly"
@@ -48,7 +47,7 @@ config.font_rules = {
     fonts.rules.bold,
     fonts.rules.bolditalic,
 }
-config.harfbuzz_features = { 'calt=0' }
+config.harfbuzz_features = { "calt=0" }
 
 -- Keybinding
 
