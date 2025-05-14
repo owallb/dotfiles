@@ -4,7 +4,7 @@ local M = {}
 
 function M.setup()
     wezterm.on("format-window-title", function()
-        return "WezTerm"
+        return "Terminal"
     end)
     wezterm.on("format-tab-title", function(tab, _, _, _, _, _)
         local title = tab.tab_title

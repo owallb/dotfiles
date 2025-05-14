@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
-local ENABLE_MULTIPLEXING = false
+local ENABLE_MULTIPLEXING = true
 
 -- quickstart: https://wezfurlong.org/wezterm/config/files.html
 -- spec: https://wezfurlong.org/wezterm/config/lua/general.html
@@ -34,7 +34,7 @@ end
 
 -- Colors
 
-config.color_scheme = "moonfly"
+config.color_scheme = "onedark"
 
 -- Fonts
 
@@ -57,9 +57,33 @@ if ENABLE_MULTIPLEXING then
     config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
     config.enable_tab_bar = true
     config.enable_scroll_bar = true
-    config.use_fancy_tab_bar = false
+    config.use_fancy_tab_bar = true
     config.show_new_tab_button_in_tab_bar = false
-    config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+    config.leader = { key = "z", mods = "CTRL", timeout_milliseconds = 1000 }
+
+    config.window_frame = {
+        -- active_titlebar_bg = "#181b20",
+        -- inactive_titlebar_bg = "#323641",
+    }
+
+    config.colors = {
+        tab_bar = {
+            inactive_tab_edge = "#282c34",
+            active_tab = {
+                bg_color = "#1f2329",
+                fg_color = "#a0a8b7",
+            },
+            inactive_tab = {
+                bg_color = "#282c34",
+                fg_color = "#a0a8b7",
+            },
+            inactive_tab_hover = {
+                bg_color = "#282c34",
+                fg_color = "#a0a8b7",
+            },
+        },
+    }
+
     bindings.enable_multiplexing()
 end
 

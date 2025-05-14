@@ -1,0 +1,36 @@
+[metadata]
+name = "onedark"
+origin_url = "https://github.com/owallb/dotfiles"
+
+[colors]
+background = "#1f2329"
+foreground = "#a0a8b7"
+cursor_bg = "#a0a8b7"
+cursor_fg = "#1e2127"
+cursor_border = "#a0a8b7"
+selection_bg = "#323641"
+# selection_fg = "#1f2329"
+scrollbar_thumb = "#535965"
+split = "#323641"
+compose_cursor = "#e8c88c"
+visual_bell = "#e8c88c"
+ansi = [
+    "#181a1f",
+    "#e55561",
+    "#8ebd6b",
+    "#e2b86b",
+    "#4fa6ed",
+    "#bf68d9",
+    "#48b0bd",
+    "#a0a8b7",
+]
+brights = [
+    "#5c6370",
+    "#e86671",
+    "#98c379",
+    "#e5c07b",
+    "#61afef",
+    "#c678dd",
+    "#56b6c2",
+    "#abb2bf",
+]
