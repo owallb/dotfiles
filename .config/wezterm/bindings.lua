@@ -112,6 +112,10 @@ function M.enable_multiplexing()
     )
     table.insert(
         M.keys,
+        { key = "o", mods = "LEADER", action = act.ActivateLastTab }
+    )
+    table.insert(
+        M.keys,
         {
             key = "h",
             mods = "LEADER",
