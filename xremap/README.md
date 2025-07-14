@@ -14,4 +14,4 @@ sudo usermod -aG input <user>
 ```sh
 xremap ~/repos/dotfiles/xremap/<config>.yml --device '<device_name>'
 ```
-5. select xremap as mouse device in OS settings
+5. might need to tab out and in again a couple of times for it to activate

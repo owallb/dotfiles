@@ -3,10 +3,7 @@ modmap:
     application:
       only: net-runelite-client-RuneLite
     remap:
-      BTN_RIGHT:
-        held: BTN_MIDDLE
-        alone: BTN_RIGHT
-        alone_timeout_millis: 100
-        exact_match: true
+      BTN_RIGHT: BTN_MIDDLE
+      BTN_SIDE: BTN_RIGHT
     device:
       only: 'Logitech USB Receiver'
