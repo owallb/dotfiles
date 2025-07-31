@@ -21,18 +21,30 @@ ERROR=false
 typeset -a PKGS
 PKGS=(
     "alacritty"
-    "dunst"
-    "fish"
-    "i3"
-    "i3lock"
-    "i3status"
-    "jq"
-    "lf"
-    "picom"
-    "rofi"
-    "startx"
     "tmux"
     "zsh"
+    "hyprland"
+    "uwsm"
+    "swaync"
+    "pipewire"
+    "wireplumber"
+    "hyprpolkitagent"
+    "qt5-wayland"
+    "qt6-wayland"
+    "hyprlock"
+    "xdg-desktop-portal-hyprland"
+    "xdg-desktop-portal-gtk"
+    "hyprland-qt-support"
+    "waybar"
+    "rofi"
+    "wl-clipboard"
+    "dolphin"
+    "pasystray"
+    "playerctl"
+    "brightnessctl"
+    "breeze"
+    "pavucontrol"
+    "otf-font-awesome"
 )
 
 # Define paths to symlink
@@ -45,10 +57,12 @@ SYMLINKS=(
     ".config/foot"
     ".config/frogminer"
     ".config/ghostty"
+    ".config/hypr"
     ".config/i3"
     ".config/i3status"
     ".config/lf"
     ".config/kde-mimeapps.list"
+    ".config/kdeglobals"
     ".config/kglobalshortcutsrc"
     ".config/klipperrc"
     ".config/kwinrc"
@@ -56,16 +70,21 @@ SYMLINKS=(
     ".config/rofi"
     ".config/strawberry"
     ".config/tmux"
+    ".config/uwsm"
+    ".config/waybar"
     ".config/wezterm"
+    ".config/xdg-desktop-portal"
     ".config/yay"
     ".config/zed"
     ".local/bin"
     ".local/share/fonts"
     ".local/share/konsole"
+    ".local/share/kxmlgui5/dolphin/dolphinui.rc"
     ".vimrc"
     ".xinit-scripts"
     ".xinitrc"
     ".Xresources"
+    ".zprofile"
 )
 
 typeset -a COPIES
@@ -79,17 +98,31 @@ typeset -A SYMLINK_MAP
 SYMLINK_MAP[zsh/rc]=".zshrc"
 
 error() {
-    msg="$1"
+    msg="$@"
     ERROR=true
     echo "Error: $msg" >&2
 }
 
 check_packages_installed() {
+    local -a missing
+
     for pkg in "${PKGS[@]}"; do
-        if ! type "$pkg" >/dev/null; then
-            error "missing $pkg"
+        local -a cmd
+
+        if [ $DISTRO = "Arch Linux" ]; then
+            cmd=(pacman -Qi "$pkg")
+        else
+            cmd=(type "$pkg")
+        fi
+
+        if ! eval "$cmd[@]" >/dev/null 2>&1; then
+            missing+=($pkg)
         fi
     done
+
+    if [ ${#missing[@]} -gt 0 ]; then
+        error "missing ${#missing[@]} packages:" "${missing[@]}"
+    fi
 }
 
 remove_symlink() {
