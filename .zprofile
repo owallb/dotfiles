@@ -1,3 +1,3 @@
-if uwsm check may-start && uwsm select; then
+if uwsm check may-start; then
 	exec uwsm start default
 fi
