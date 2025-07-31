@@ -32,6 +32,7 @@ PKGS=(
     "qt5-wayland"
     "qt6-wayland"
     "hyprlock"
+    "hypridle"
     "xdg-desktop-portal-hyprland"
     "xdg-desktop-portal-gtk"
     "hyprland-qt-support"

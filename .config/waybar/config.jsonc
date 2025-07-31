@@ -13,6 +13,7 @@
         "network",
         "battery",
         "tray",
+        "custom/lock"
     ],
     "clock": {
         "format": "{:%H:%M}",
@@ -76,5 +77,10 @@
         "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
         "format-icons": ["", "", "", "", ""]
+    },
+    "custom/lock": {
+        "format": "",
+        "tooltip-format": "",
+        "on-click": "pidof hyprlock || uwsm app -- hyprlock"
     }
 }
