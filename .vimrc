@@ -145,6 +145,7 @@ nmap <Leader>fg :Rg ""<CR>
 nmap <expr> <Leader>fe &filetype ==# 'netrw' ? ':Rex<CR>' : ':Ex<CR>'
 nmap <C-w>q :bn \| bd#<CR>
 nmap <Leader>tt :NERDTreeToggle<CR>
+nmap <Leader>uu :tabnew \| bprevious \| UndotreeToggle \| UndotreeFocus<CR>
 
 " {{{2 Default Mappings
 
@@ -230,6 +231,12 @@ let g:onedark_color_overrides = {
             \ "background": {"gui": "#1f2329" },
             \}
 
+" {{{3 Undotree
+let g:undotree_WindowLayout = 2
+let g:undotree_DiffCommand = "diff -u"
+let g:undotree_SplitWidth = 50
+let g:undotree_DiffpanelHeight = 20
+
 " {{{2 Install
 let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
 if !filereadable(s:plug_file)
@@ -252,6 +259,7 @@ call plug#begin(s:plug_dir)
     Plug 'jceb/vim-orgmode'
     Plug 'preservim/nerdtree'
     Plug 'ryanoasis/vim-devicons'
+    Plug 'mbbill/undotree'
 
     " Plug 'prabirshrestha/vim-lsp'
     " Plug 'dense-analysis/ale' 
