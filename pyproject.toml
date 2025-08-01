@@ -1,0 +1,76 @@
+[project]
+name = ""
+version = "0.0.0"
+dependencies = [
+    ""
+]
+authors = [
+  { name="", email="" },
+]
+description = ""
+readme = "README.md"
+requires-python = ">=3.13"
+
+[project.urls]
+Homepage = ""
+
+[project.optional-dependencies]
+dev = [
+    "setuptools>=75.8",
+    "build"
+]
+
+[project.scripts]
+foo = "proj_name.module:foo"
+
+[build-system]
+requires = ["setuptools>=75.8"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 80
+preview = true
+
+[tool.ruff.lint]
+select = [
+    "YTT",
+    "ANN",
+    "ASYNC",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "T10",
+    "FIX",
+    "FA",
+    "ISC",
+    "PIE",
+    "PYI",
+    "PT",
+    "RET",
+    "SIM",
+    "TC",
+    "I",
+    "C90",
+    "DOC",
+    "D",
+    "F",
+    "PL",
+    "UP",
+    "RUF"
+]
+ignore = [
+    "A001",
+    "D101",
+    "D202",
+    "D203",
+    "D212",
+    "D301",
+    "D413",
+    "TC006",
+    "COM812"
+]
+
+[tool.pyrefly]
+use_untyped_imports = true
