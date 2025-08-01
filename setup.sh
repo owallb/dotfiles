@@ -16,37 +16,17 @@ FORCE=false
 REMOVE_EXISTING=false
 IGNORE_EXISTING=false
 ERROR=false
+PROFILE="hyprland"
 
-# Define packages
-typeset -a PKGS
-PKGS=(
-    "alacritty"
-    "tmux"
-    "zsh"
-    "hyprland"
-    "uwsm"
-    "fnott"
-    "pipewire"
-    "wireplumber"
-    "hyprpolkitagent"
-    "qt5-wayland"
-    "qt6-wayland"
-    "hyprlock"
-    "hypridle"
-    "xdg-desktop-portal-hyprland"
-    "xdg-desktop-portal-gtk"
-    "hyprland-qt-support"
-    "waybar"
-    "rofi"
-    "wl-clipboard"
-    "dolphin"
-    "pasystray"
-    "playerctl"
-    "brightnessctl"
-    "breeze"
-    "pavucontrol"
-    "otf-font-awesome"
-)
+pkg_query_arch() {
+    pacman -Qi "$@"
+}
+
+typeset -A PKG_QUERY
+PKG_QUERY["Arch Linux"]="pkg_query_arch"
+
+typeset -A PKGS
+PKGS["Arch Linux hyprland"]="alacritty tmux zsh hyprland uwsm fnott pipewire wireplumber hyprpolkitagent qt5-wayland qt6-wayland hyprlock hypridle xdg-desktop-portal-hyprland xdg-desktop-portal-gtk hyprland-qt-support waybar rofi wl-clipboard dolphin pasystray playerctl brightnessctl breeze pavucontrol otf-font-awesome"
 
 # Define paths to symlink
 typeset -a SYMLINKS
@@ -107,17 +87,11 @@ error() {
 
 check_packages_installed() {
     local -a missing
+    local -a pkgs
 
-    for pkg in "${PKGS[@]}"; do
-        local -a cmd
-
-        if [ $DISTRO = "Arch Linux" ]; then
-            cmd=(pacman -Qi "$pkg")
-        else
-            cmd=(type "$pkg")
-        fi
-
-        if ! eval "$cmd[@]" >/dev/null 2>&1; then
+    pkgs=(${=PKGS["$DISTRO $PROFILE"]})
+    for pkg in "${pkgs[@]}"; do
+        if ! ${PKG_QUERY["$DISTRO"]} "$pkg" >/dev/null 2>&1; then
             missing+=($pkg)
         fi
     done
