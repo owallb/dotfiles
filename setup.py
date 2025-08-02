@@ -19,26 +19,23 @@ class Installer:
         self.script_dir = self.script_file.parent
         self.source_dir = self.script_dir
         self.dest_dir = Path.home()
-
         self.distro = platform.freedesktop_os_release().get("NAME", "Unknown")
         self.profile = profile
         self.has_error = False
-
-        # Package query functions by distro
         self.pkg_query = {"Arch Linux": self._pkg_query_arch}
-
-        # Packages by distro and profile
         self.pkgs = {
-            "Arch Linux hyprland": [
+            "Arch Linux base": [
                 "alacritty",
                 "tmux",
                 "zsh",
-                "libnewt",
                 "vim",
                 "unzip",
                 "npm",
                 "nvim",
                 "firefox",
+            ],
+            "Arch Linux hyprland": [
+                "libnewt",
                 "hyprland",
                 "uwsm",
                 "fnott",
@@ -62,9 +59,8 @@ class Installer:
                 "breeze",
                 "pavucontrol",
                 "otf-font-awesome",
-            ]
+            ],
         }
-
         self.symlinks = [
             ".config/alacritty",
             ".config/dolphinrc",
@@ -103,15 +99,12 @@ class Installer:
             ".Xresources",
             ".zprofile",
         ]
-
         self.copies = [
             ".config/gtk-3.0",
             ".config/gtk-4.0",
             ".gtkrc-2.0",
         ]
-
         self.symlink_map = {"zsh/rc": ".zshrc"}
-
         self.gsettings = [
             ["org.gnome.desktop.interface", "color-scheme", "prefer-dark"]
         ]
@@ -139,19 +132,27 @@ class Installer:
 
     def check_packages_installed(self) -> None:
         """Check if required packages are installed."""
-        key = f"{self.distro} {self.profile}"
-        if key not in self.pkgs:
-            self.error(f"No package list defined for {key}")
+        profile = f"{self.distro} {self.profile}"
+        if profile not in self.pkgs:
+            self.error(f"No package list defined for {profile}")
             return
 
         if self.distro not in self.pkg_query:
             self.error(f"No package query function for {self.distro}")
             return
 
-        missing: list[str] = []
-        pkg_list = self.pkgs[key]
+        pkg_list: list[str] = []
+
+        if self.profile != "base":
+            base = f"{self.distro} base"
+            if base in self.pkgs:
+                pkg_list.extend(self.pkgs[base])
+
+        pkg_list.extend(self.pkgs[profile])
+        print("Package list:", pkg_list)
         query_func = self.pkg_query[self.distro]
 
+        missing: list[str] = []
         for pkg in pkg_list:
             if not query_func(pkg):
                 missing.append(pkg)
@@ -313,7 +314,8 @@ class Installer:
         except FileNotFoundError:
             self.error("infocmp command not found")
 
-    def set_gsettings(self):
+    def set_gsettings(self) -> None:
+        """Set gsettings."""
         for setting in self.gsettings:
             result = subprocess.run(
                 ["gsettings", "set", *setting],
@@ -322,10 +324,7 @@ class Installer:
                 check=False,
             )
             if result.returncode != 0:
-                self.error(
-                    f"Failed to set gsettings: {setting}"
-                )
-
+                self.error(f"Failed to set gsettings: {setting}")
 
     def run(
         self,
