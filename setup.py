@@ -33,6 +33,12 @@ class Installer:
                 "alacritty",
                 "tmux",
                 "zsh",
+                "libnewt",
+                "vim",
+                "unzip",
+                "npm",
+                "nvim",
+                "firefox",
                 "hyprland",
                 "uwsm",
                 "fnott",
@@ -49,7 +55,7 @@ class Installer:
                 "waybar",
                 "rofi",
                 "wl-clipboard",
-                "dolphin",
+                "nautilus",
                 "pasystray",
                 "playerctl",
                 "brightnessctl",
@@ -105,6 +111,10 @@ class Installer:
         ]
 
         self.symlink_map = {"zsh/rc": ".zshrc"}
+
+        self.gsettings = [
+            ["org.gnome.desktop.interface", "color-scheme", "prefer-dark"]
+        ]
 
     @staticmethod
     def _pkg_query_arch(package: str) -> bool:
@@ -303,6 +313,20 @@ class Installer:
         except FileNotFoundError:
             self.error("infocmp command not found")
 
+    def set_gsettings(self):
+        for setting in self.gsettings:
+            result = subprocess.run(
+                ["gsettings", "set", *setting],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode != 0:
+                self.error(
+                    f"Failed to set gsettings: {setting}"
+                )
+
+
     def run(
         self,
         force: bool = False,
@@ -318,6 +342,7 @@ class Installer:
         self.check_terminfo()
         self.create_all_symlinks(force, ignore)
         self.copy_all_items(force, ignore)
+        self.set_gsettings()
 
 
 def main() -> None:
