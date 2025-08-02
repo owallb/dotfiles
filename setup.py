@@ -149,7 +149,6 @@ class Installer:
                 pkg_list.extend(self.pkgs[base])
 
         pkg_list.extend(self.pkgs[profile])
-        print("Package list:", pkg_list)
         query_func = self.pkg_query[self.distro]
 
         missing: list[str] = []
