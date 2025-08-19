@@ -10,8 +10,29 @@ set incsearch true
 set incfilter true
 set period 1
 
+cmd trash ${{
+    echo "Selected file(s):"
+    for file in $fx; do
+        echo "  $file"
+    done
+    printf "Send to trash? [y/N] "
+    read -n1 ans
+    echo
+    case "$ans" in
+        [Yy])
+            for file in $fx; do
+                gio trash -- $file
+            done
+            ;;
+        *)
+            ;;
+    esac
+}}
+
 # map f filter
 # map j updir
 # map k down
 # map l up
 # map ; open
+
+map D trash
