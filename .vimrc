@@ -144,7 +144,6 @@ nmap <Leader>fb :Buffers<CR>
 nmap <Leader>fg :Rg ""<CR>
 nmap <expr> <Leader>fe &filetype ==# 'netrw' ? ':Rex<CR>' : ':Ex<CR>'
 nmap <C-w>q :bn \| bd#<CR>
-nmap <Leader>tt :NERDTreeToggle<CR>
 nmap <Leader>uu :tabnew \| bprevious \| UndotreeToggle \| UndotreeFocus<CR>
 
 " {{{2 Default Mappings
@@ -212,20 +211,6 @@ let g:gitgutter_sign_removed = '┃'
 
 let g:colorizer_colornames = 0
 
-" {{{3 NERDTree
-
-let g:NERDTreeDirArrowCollapsible = ""
-let g:NERDTreeDirArrowExpandable = ""
-let g:NERDTreeHijackNetrw = 0
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeWinSize = 40
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeCascadeSingleChildDir = 0
-let g:NERDTreeRemoveFileCmd = "gio trash "
-let g:NERDTreeRemoveDirCmd = "gio trash "
-let g:NERDTreeMapActivateNode = "l"
-let g:NERDTreeMapCloseDir = "h"
-
 " {{{3 onedark
 let g:onedark_color_overrides = {
             \ "background": {"gui": "#1f2329" },
@@ -257,8 +242,6 @@ call plug#begin(s:plug_dir)
     Plug 'rbong/vim-flog'
     Plug 'chrisbra/Colorizer'
     Plug 'jceb/vim-orgmode'
-    Plug 'preservim/nerdtree'
-    Plug 'ryanoasis/vim-devicons'
     Plug 'mbbill/undotree'
 
     " Plug 'prabirshrestha/vim-lsp'
@@ -612,22 +595,4 @@ function! s:SetupGitGutter()
         \\ %4.4(%p%%%)%5.5l:%-3.3v
 endfunction
 
-function! s:SetupNERDTree()
-    if !exists('g:loaded_nerd_tree')
-        return
-    endif
-
-    " Exit Vim if NERDTree is the only window remaining in the only tab.
-    autocmd BufEnter * if tabpagenr('$') == 1 &&
-                \ winnr('$') == 1 &&
-                \ exists('b:NERDTree') &&
-                \ b:NERDTree.isTabTree() |
-                \ quit |
-                \ endif
-
-    " Start NERDTree and put the cursor back in the other window.
-    NERDTree | wincmd p
-endfunction
-
 autocmd VimEnter * call s:SetupGitGutter()
-autocmd VimEnter * call s:SetupNERDTree()
