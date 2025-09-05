@@ -548,27 +548,34 @@ nmap <Leader>gl :Flog<CR>
 
 " {{{1 Statusline
 
-function! GitStatus()
+function! StatusLine() abort
     let [a,m,r] = GitGutterGetHunkSummary()
     let parts = []
+    let suffix = g:statusline_winid == win_getid(winnr()) ? '' : 'NC'
 
     if a > 0
-        let parts += ['%#GitStatusAdd#' . printf('+%d', a) . '%*']
+        let parts += ['%#GitStatusAdd' . suffix . '#' . printf('+%d', a) . '%*']
     endif
 
     if m > 0
-        let parts += ['%#GitStatusChange#' . printf('~%d', m) . '%*']
+        let parts += ['%#GitStatusChange' . suffix . '#' . printf('~%d', m) . '%*']
     endif
 
     if r > 0
-        let parts += ['%#GitStatusDelete#' . printf('-%d', r) . '%*']
+        let parts += ['%#GitStatusDelete' . suffix . '#' . printf('-%d', r) . '%*']
     endif
 
-    if empty(parts)
-        return ''
+    let git_status = ''
+
+    if !empty(parts)
+        let git_status = ' ' . join(parts, ' ')
     endif
 
-    return ' ' . join(parts, ' ')
+    return " %f%4( %m%) "
+                \ . git_status
+                \ . "%="
+                \ . "%{&filetype} %-6.6{&fileencoding} %-4.4{&fileformat}"
+                \ . " %4.4(%p%%%)%6.6l:%-3.3v"
 endfunction
  
 function! s:SetupGitGutter()
@@ -588,11 +595,20 @@ function! s:SetupGitGutter()
         \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
         \ . ' guibg='
         \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+    execute 'highlight default GitStatusAddNC guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+    execute 'highlight GitStatusChangeNC guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+    execute 'highlight GitStatusDeleteNC guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
 
-    set statusline=\ %f%{%GitStatus()%}\ %m
-        \%=
-        \%-5.5{&filetype}\ %-6.6{&fileencoding}\ %-4.4{&fileformat}
-        \\ %4.4(%p%%%)%5.5l:%-3.3v
+    set statusline=%!StatusLine()
 endfunction
 
 autocmd VimEnter * call s:SetupGitGutter()
