@@ -145,6 +145,8 @@ nmap <Leader>fg :Rg ""<CR>
 nmap <expr> <Leader>fe &filetype ==# 'netrw' ? ':Rex<CR>' : ':Ex<CR>'
 nmap <C-w>q :bn \| bd#<CR>
 nmap <Leader>uu :tabnew \| bprevious \| UndotreeToggle \| UndotreeFocus<CR>
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-\> <Esc>
 
 " {{{2 Default Mappings
 
@@ -644,3 +646,5 @@ function! ToggleGitStatus()
 endfunction
 
 autocmd VimEnter * call s:SetupGitGutter()
+
+cnoreabbrev term terminal ++curwin
