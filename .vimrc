@@ -215,8 +215,42 @@ let g:colorizer_colornames = 0
 
 " {{{3 onedark
 let g:onedark_color_overrides = {
-            \ "background": {"gui": "#1f2329" },
+            \ "background": {"gui": "#1f2329", "cterm": "235", "cterm16": "NONE" },
+            \ "cursor_grey": { "gui": "#282c34", "cterm": "236", "cterm16": "0" },
             \}
+
+if (has("autocmd"))
+  augroup colorextend
+    autocmd!
+    autocmd ColorScheme * call onedark#extend_highlight("Terminal", 
+                \ { "bg": { "gui": "#1f2329" } }
+                \)
+    autocmd ColorScheme * call onedark#extend_highlight("StatusLine", 
+                \ { "bg": { "gui": "#30363f" } }
+                \)
+    autocmd ColorScheme * call onedark#extend_highlight("StatusLineNC", 
+                \ { "bg": { "gui": "#282c34" } }
+                \)
+    autocmd ColorScheme * call onedark#extend_highlight("StatusLineTerm", 
+                \ { "bg": { "gui": "#30363f" } }
+                \)
+    autocmd ColorScheme * call onedark#extend_highlight("StatusLineTermNC", 
+                \ { "bg": { "gui": "#282c34" } }
+                \)
+    autocmd ColorScheme * call onedark#set_highlight("DiffAdd", 
+                \ { "bg": { "gui": "#1e3a2a", "cterm": "NONE" } }
+                \)
+    autocmd ColorScheme * call onedark#set_highlight("DiffText", 
+                \ { "bg": { "gui": "#274964", "cterm": "NONE" } }
+                \)
+    autocmd ColorScheme * call onedark#set_highlight("DiffChange", 
+                \ { "bg": { "gui": "#15304a", "cterm": "NONE" } }
+                \)
+    autocmd ColorScheme * call onedark#set_highlight("DiffDelete", 
+                \ { "bg": { "gui": "#3d2224", "cterm": "NONE" } }
+                \)
+  augroup END
+endif
 
 " {{{3 Undotree
 let g:undotree_WindowLayout = 2
