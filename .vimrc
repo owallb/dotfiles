@@ -103,7 +103,7 @@ nmap <Leader>gd :Gdiffsplit<CR>
 nmap <Leader>gc :G commit<CR>
 nmap <Leader>ga :G commit --amend<CR>
 nmap <Leader>gp :G push<CR>
-nmap <Leader>gg :tabnew \| leftabove vert G \| vert resize 50 \| set wfw<CR>
+nmap <Leader>gg :call ToggleGitStatus()<CR>
 nmap ]g <Plug>(GitGutterNextHunk)
 nmap [g <Plug>(GitGutterPrevHunk)
 map <Leader>gs <Plug>(GitGutterStageHunk)
@@ -609,6 +609,38 @@ function! s:SetupGitGutter()
         \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
 
     set statusline=%!StatusLine()
+endfunction
+
+function! OpenGitStatus()
+    let l:previous_win = win_getid()
+    echo l:previous_win
+    leftabove vertical G
+    vertical resize 50
+    setlocal winfixwidth
+    call win_gotoid(l:previous_win)
+endfunction
+
+function! GetGitStatusWin()
+    let l:current_tabpage = tabpagenr()
+    for l:winnr in range(1, winnr('$'))
+        let l:bufnr = winbufnr(l:winnr)
+        let l:buftype = getbufvar(l:bufnr, '&buftype')
+        let l:bufname = bufname(l:bufnr)
+        if l:buftype ==# 'nowrite' && l:bufname =~# '^fugitive://.*\.git//$'
+            return l:winnr
+        endif
+    endfor
+    return 0
+endfunction
+
+function! ToggleGitStatus()
+    let l:win = GetGitStatusWin()
+    if l:win
+        execute l:win . 'wincmd c'
+        return
+    endif
+
+    call OpenGitStatus()
 endfunction
 
 autocmd VimEnter * call s:SetupGitGutter()
