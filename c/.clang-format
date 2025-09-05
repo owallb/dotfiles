@@ -1,0 +1,25 @@
+---
+BasedOnStyle: LLVM
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Left
+AlignEscapedNewlines: Right
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBraces: WebKit
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList: AfterColon
+IncludeBlocks: Regroup
+IncludeIsMainRegex: '(_test)?$'
+IndentWidth: 4
+LineEnding: LF
+PackConstructorInitializers: Never
+PenaltyBreakAssignment: 100
+PointerAlignment: Left
+QualifierAlignment: Right
+Standard: Latest
+WhitespaceSensitiveMacros:
+  - STRINGIZE
+  - STRINGIZE_VALUE
+...

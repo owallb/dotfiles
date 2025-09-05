@@ -69,7 +69,11 @@ ignore = [
     "D301",
     "D413",
     "TC006",
-    "COM812"
+    "COM812",
+    "PLR0913",
+    "PLR0917",
+    "PYI011",
+    "UP031"
 ]
 
 [tool.pyrefly]

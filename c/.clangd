@@ -1,0 +1,23 @@
+---
+Diagnostics:
+    UnusedIncludes: Strict
+    MissingIncludes: Strict
+
+CompileFlags:
+  Add: [-xc]
+  Remove: [-fanalyzer]
+
+Completion:
+  AllScopes: true
+
+InlayHints:
+    Enabled: No
+
+SemanticTokens:
+  DisabledKinds: []
+  DisabledModifiers: []
+
+# Will possibly be supported in clangd 22
+Documentation:
+  CommentFormat: Doxygen
+...
