@@ -178,6 +178,7 @@ autocmd FileType c,cpp
             \ setlocal shiftwidth=2
 autocmd FileType netrw nmap <buffer> <C-h> -
 autocmd FileType netrw nmap <buffer> <C-l> <CR>
+autocmd FileType netrw setlocal colorcolumn=0
 
 " Misc
 autocmd VimEnter * :clearjumps
@@ -416,6 +417,8 @@ call plug#end()
 " {{{3 Colorscheme
 
 silent! colorscheme onedark
+
+highlight! link netrwMarkFile Identifier
 
 " {{{3 GitGutter
 
