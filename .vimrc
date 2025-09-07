@@ -681,4 +681,4 @@ autocmd VimEnter * call s:SetupGitGutter()
 
 cnoreabbrev term terminal ++curwin
 
-autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap
+autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap colorcolumn=""
