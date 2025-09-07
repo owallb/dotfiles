@@ -173,9 +173,9 @@ autocmd BufReadPost * silent! normal! g`"zv
 " Filetype specific config
 autocmd FileType go setlocal noexpandtab
 autocmd FileType c,cpp
-    \ setlocal tabstop=2 |
-    \ setlocal softtabstop=2 |
-    \ setlocal shiftwidth=2
+            \ setlocal tabstop=2 |
+            \ setlocal softtabstop=2 |
+            \ setlocal shiftwidth=2
 autocmd FileType netrw nmap <buffer> <C-h> -
 autocmd FileType netrw nmap <buffer> <C-l> <CR>
 
@@ -310,7 +310,7 @@ let g:undotree_DiffpanelHeight = 20
 let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
 if !filereadable(s:plug_file)
     silent execute '!curl -fkLo ' . s:plug_file ' --create-dirs'
-        \ ' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+                \ ' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -331,32 +331,32 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'mbbill/undotree'
 
-    " Plug 'prabirshrestha/vim-lsp'
-    " Plug 'dense-analysis/ale' 
-    " Plug 'prabirshrestha/asyncomplete.vim'
-    " Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'dense-analysis/ale' 
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-    " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-    " Plug 'https://github.com/yegappan/lsp'
+" Plug 'https://github.com/yegappan/lsp'
 
-    " Some notes:
-    " * ALE doesn't support semantic highlighting
-    " * vim-lsp doesn't support clangd switch to header/source or request document
-    "   highlight on cursor or request diagnostic float on cursor
-    " * CoC flickers in C++/clangd when semanticTokens is enabled
-    " * lsp slow loading new buffers
-    " * YouCompleteMe ??? haven't tried but supports semantic highlighting
-    " 
-    " To conclude, vim-lsp + asynccomplete + ALE seems to be the best stack.
-    " Disabling LSP stuff for now.
+" Some notes:
+" * ALE doesn't support semantic highlighting
+" * vim-lsp doesn't support clangd switch to header/source or request document
+"   highlight on cursor or request diagnostic float on cursor
+" * CoC flickers in C++/clangd when semanticTokens is enabled
+" * lsp slow loading new buffers
+" * YouCompleteMe ??? haven't tried but supports semantic highlighting
+" 
+" To conclude, vim-lsp + asynccomplete + ALE seems to be the best stack.
+" Disabling LSP stuff for now.
 call plug#end()
 
 " {{{2 Setup
 " {{{3 Colorscheme
 
 silent! colorscheme onedark
- 
+
 " {{{3 GitGutter
 
 function! s:SetupGitGutter()
@@ -367,29 +367,29 @@ function! s:SetupGitGutter()
     highlight GitGutterChange guifg=#4fa6ed
 
     execute 'highlight default GitStatusAdd guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+                \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
+                \ . ' guibg='
+                \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
     execute 'highlight GitStatusChange guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+                \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
+                \ . ' guibg='
+                \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
     execute 'highlight GitStatusDelete guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+                \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
+                \ . ' guibg='
+                \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
     execute 'highlight default GitStatusAddNC guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+                \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
+                \ . ' guibg='
+                \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
     execute 'highlight GitStatusChangeNC guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+                \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
+                \ . ' guibg='
+                \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
     execute 'highlight GitStatusDeleteNC guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+                \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
+                \ . ' guibg='
+                \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
 
     nmap ]g <Plug>(GitGutterNextHunk)
     nmap [g <Plug>(GitGutterPrevHunk)
@@ -450,27 +450,27 @@ autocmd! FileType fzf tnoremap <buffer> <C-l> <CR>
 
 " To match exact, prefix word with `'`
 command! -bang -nargs=* Rg call fzf#vim#grep(
-    \ "rg"
-    \ . " --column"
-    \ . " --line-number"
-    \ . " --no-heading"
-    \ . " --color=always"
-    \ . " --smart-case"
-    \ . " --iglob=!.git"
-    \ . " --hidden"
-    \ . " --no-ignore-vcs " .<q-args>, 1, <bang>0)
+            \ "rg"
+            \ . " --column"
+            \ . " --line-number"
+            \ . " --no-heading"
+            \ . " --color=always"
+            \ . " --smart-case"
+            \ . " --iglob=!.git"
+            \ . " --hidden"
+            \ . " --no-ignore-vcs " .<q-args>, 1, <bang>0)
 
 command! -bang CwdHistory call fzf#run(fzf#wrap({
-    \ 'source': filter(
-    \   fzf#vim#_recent_files(),
-    \   'v:val !~ "^\\~\\?/"'
-    \ ),
-    \ 'options': [
-    \   '-m',
-    \   '--header-lines', !empty(expand('%')),
-    \   '--prompt', 'CwdHist> '
-    \ ]},
-    \ <bang>0))
+            \ 'source': filter(
+            \   fzf#vim#_recent_files(),
+            \   'v:val !~ "^\\~\\?/"'
+            \ ),
+            \ 'options': [
+            \   '-m',
+            \   '--header-lines', !empty(expand('%')),
+            \   '--prompt', 'CwdHist> '
+            \ ]},
+            \ <bang>0))
 
 nmap <Leader>ff :Files<CR>
 nmap <Leader>fr :CwdHistory<CR>
