@@ -198,8 +198,15 @@ autocmd FileType c,cpp
 autocmd FileType netrw nmap <buffer> <C-h> -
 autocmd FileType netrw nmap <buffer> <C-l> <CR>
 autocmd VimEnter * :clearjumps
+autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap signcolumn=no colorcolumn=
+
+" {{{1 Custom abbreviations
+
+cnoreabbrev term terminal ++curwin
+
 
 " {{{1 Custom commands
+
 command! W write
 
 " {{{1 Plugins
@@ -714,7 +721,3 @@ endfunction
 
 autocmd VimEnter * call s:SetupGitGutter()
 autocmd VimEnter * call s:SetupNERDTree()
-
-cnoreabbrev term terminal ++curwin
-
-autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap signcolumn=no colorcolumn=
