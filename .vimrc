@@ -178,6 +178,8 @@ autocmd FileType c,cpp
     \ setlocal shiftwidth=2
 autocmd FileType netrw nmap <buffer> <C-h> -
 autocmd FileType netrw nmap <buffer> <C-l> <CR>
+
+" Misc
 autocmd VimEnter * :clearjumps
 autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap signcolumn=no colorcolumn=
 
