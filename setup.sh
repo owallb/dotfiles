@@ -56,6 +56,7 @@ SYMLINKS=(
     ".config/rofi"
     ".config/strawberry"
     ".config/tmux"
+    ".config/vlc"
     ".config/wezterm"
     ".config/yay"
     ".config/zed"
