@@ -251,8 +251,8 @@ let g:NERDTreeMinimalUI = 1
 let g:NERDTreeCascadeSingleChildDir = 0
 let g:NERDTreeRemoveFileCmd = "gio trash "
 let g:NERDTreeRemoveDirCmd = "gio trash "
-let g:NERDTreeMapActivateNode = "l"
-let g:NERDTreeMapCloseDir = "h"
+let g:NERDTreeMapActivateNode = "<C-l>"
+let g:NERDTreeMapCloseDir = "<C-h>"
 
 " {{{3 onedark
 
