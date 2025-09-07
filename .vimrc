@@ -77,9 +77,6 @@ set hidden
 set incsearch
 set jumpoptions=stack
 set signcolumn=yes
-set statusline=\ %m\%=
-            \%-5.5{&filetype}\ %-6.6{&fileencoding}\ %-4.4{&fileformat}
-            \\ %4.4(%p%%%)%5.5l:%-3.3v
 
 syntax on
 filetype plugin indent on
@@ -100,11 +97,6 @@ map <Leader>dp :diffput<CR>
 map <Leader>do :diffget<CR>
 xmap <Leader>dp :diffput<CR>
 xmap <Leader>do :diffget<CR>
-nmap <Leader>gd :Gdiffsplit<CR>
-nmap <Leader>gc :G commit<CR>
-nmap <Leader>ga :G commit --amend<CR>
-nmap <Leader>gp :G push<CR>
-nmap <Leader>gg :call ToggleGitStatus()<CR>
 nmap ]g <Plug>(GitGutterNextHunk)
 nmap [g <Plug>(GitGutterPrevHunk)
 map <Leader>gs <Plug>(GitGutterStageHunk)
@@ -139,10 +131,6 @@ inoremap <C-Y> <C-D>
 noremap <C-l> :nohlsearch<CR>:diffupdate<CR><C-l>
 nmap tn :tabnew<CR>
 nmap tq :tabclose<CR>
-nmap <Leader>ff :Files<CR>
-nmap <Leader>fr :CwdHistory<CR>
-nmap <Leader>fb :Buffers<CR>
-nmap <Leader>fg :Rg ""<CR>
 nmap <expr> <Leader>fe &filetype ==# 'netrw' ? ':Rex<CR>' : ':Ex<CR>'
 nmap <C-w>q :bn \| bd#<CR>
 nmap <Leader>tt :NERDTreeToggle \| wincmd p<CR>
@@ -209,9 +197,44 @@ cnoreabbrev term terminal ++curwin
 
 command! W write
 
-" {{{1 Plugins
-" {{{2 Plugin variables
+" {{{1 Statusline
 
+function! StatusLine() abort
+    let git_status = ''
+
+    if exists('g:loaded_gitgutter')
+        let [a,m,r] = GitGutterGetHunkSummary()
+        let parts = []
+        let suffix = g:statusline_winid == win_getid(winnr()) ? '' : 'NC'
+
+        if a > 0
+            let parts += ['%#GitStatusAdd' . suffix . '#' . printf('+%d', a) . '%*']
+        endif
+
+        if m > 0
+            let parts += ['%#GitStatusChange' . suffix . '#' . printf('~%d', m) . '%*']
+        endif
+
+        if r > 0
+            let parts += ['%#GitStatusDelete' . suffix . '#' . printf('-%d', r) . '%*']
+        endif
+
+        if !empty(parts)
+            let git_status = ' ' . join(parts, ' ')
+        endif
+    endif
+
+    return " %f%4( %m%) "
+                \ . git_status
+                \ . "%="
+                \ . "%{&filetype} %-6.6{&fileencoding} %-4.4{&fileformat}"
+                \ . " %4.4(%p%%%)%6.6l:%-3.3v"
+endfunction
+
+set statusline=%!StatusLine()
+
+" {{{1 Plugins
+" {{{2 Variables
 " {{{3 GitGutter
 
 let g:gitgutter_sign_added = '┃'
@@ -237,6 +260,7 @@ let g:NERDTreeMapActivateNode = "l"
 let g:NERDTreeMapCloseDir = "h"
 
 " {{{3 onedark
+
 let g:onedark_color_overrides = {
             \ "background": {"gui": "#1f2329", "cterm": "235", "cterm16": "NONE" },
             \ "cursor_grey": { "gui": "#282c34", "cterm": "236", "cterm16": "0" },
@@ -274,12 +298,14 @@ augroup colorextend
 augroup END
 
 " {{{3 Undotree
+
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffCommand = "diff -u"
 let g:undotree_SplitWidth = 50
 let g:undotree_DiffpanelHeight = 20
 
 " {{{2 Install
+
 let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
 if !filereadable(s:plug_file)
     silent execute '!curl -fkLo ' . s:plug_file ' --create-dirs'
@@ -324,19 +350,89 @@ call plug#begin(s:plug_dir)
     " Disabling LSP stuff for now.
 call plug#end()
 
-" {{{2 Colorscheme
+" {{{2 Setup
+" {{{3 Colorscheme
 
 silent! colorscheme onedark
+ 
+" {{{3 GitGutter
 
-" {{{2 Fzf
+function! s:SetupGitGutter()
+    if !exists('g:loaded_gitgutter')
+        return
+    endif
 
-function! s:build_quickfix_list(lines)
-    echo "lines"
-    echo lines
-    call setqflist(map(copy(a:lines), '{ "filename": v:val, "lnum": 1 }'))
-    copen
-    cc
+    execute 'highlight default GitStatusAdd guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+    execute 'highlight GitStatusChange guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+    execute 'highlight GitStatusDelete guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
+    execute 'highlight default GitStatusAddNC guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+    execute 'highlight GitStatusChangeNC guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+    execute 'highlight GitStatusDeleteNC guifg='
+        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
+        \ . ' guibg='
+        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
 endfunction
+
+autocmd VimEnter * call s:SetupGitGutter()
+
+" {{{3 Fugitive
+
+function! OpenGitStatus()
+    let l:previous_win = win_getid()
+    echo l:previous_win
+    leftabove vertical G
+    vertical resize 50
+    setlocal winfixwidth
+    call win_gotoid(l:previous_win)
+endfunction
+
+function! GetGitStatusWin()
+    let l:current_tabpage = tabpagenr()
+    for l:winnr in range(1, winnr('$'))
+        let l:bufnr = winbufnr(l:winnr)
+        let l:buftype = getbufvar(l:bufnr, '&buftype')
+        let l:bufname = bufname(l:bufnr)
+        if l:buftype ==# 'nowrite' && l:bufname =~# '^fugitive://.*\.git//$'
+            return l:winnr
+        endif
+    endfor
+    return 0
+endfunction
+
+function! ToggleGitStatus()
+    let l:win = GetGitStatusWin()
+    if l:win
+        execute l:win . 'wincmd c'
+        return
+    endif
+
+    call OpenGitStatus()
+endfunction
+
+
+nmap <Leader>gd :Gvdiffsplit<CR>
+nmap <Leader>gD :Gvdiffsplit HEAD<CR>
+nmap <Leader>gc :G commit<CR>
+nmap <Leader>ga :G commit --amend<CR>
+nmap <Leader>gp :G push<CR>
+nmap <Leader>gg :call ToggleGitStatus()<CR>
+
+" {{{3 Fzf
 
 autocmd! FileType fzf tnoremap <buffer> <C-k> <Up>
 autocmd! FileType fzf tnoremap <buffer> <C-j> <Down>
@@ -366,11 +462,33 @@ command! -bang CwdHistory call fzf#run(fzf#wrap({
     \ ]},
     \ <bang>0))
 
-" {{{2 flog
+nmap <Leader>ff :Files<CR>
+nmap <Leader>fr :CwdHistory<CR>
+nmap <Leader>fb :Buffers<CR>
+nmap <Leader>fg :Rg ""<CR>
+
+" {{{3 NERDTree
+
+function! s:SetupNERDTree()
+    if !exists('g:loaded_nerd_tree')
+        return
+    endif
+
+    " Exit Vim if NERDTree is the only window remaining in the only tab.
+    autocmd BufEnter * if tabpagenr('$') == 1 &&
+                \ winnr('$') == 1 &&
+                \ exists('b:NERDTree') &&
+                \ b:NERDTree.isTabTree() |
+                \ quit |
+                \ endif
+endfunction
+
+autocmd VimEnter * call s:SetupNERDTree()
+" {{{3 flog
 
 nmap <Leader>gl :Flog<CR>
 
-" {{{2 vim-lsp
+" {{{3 vim-lsp
 
 " let g:lsp_use_native_client = 1
 " let g:lsp_semantic_enabled = 1
@@ -472,7 +590,7 @@ nmap <Leader>gl :Flog<CR>
 "     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 " augroup END
 
-" {{{2 CoC
+" {{{3 CoC
 
 " inoremap <silent><expr> <TAB>
 "       \ coc#pum#visible() ? coc#pum#next(1) :
@@ -532,7 +650,7 @@ nmap <Leader>gl :Flog<CR>
 " xmap <leader>la  <Plug>(coc-codeaction-selected)
 " nmap <leader>la  <Plug>(coc-codeaction-selected)
 
-" {{{2 lsp
+" {{{3 lsp
 
 " autocmd User LspSetup call LspOptionsSet(#{
 "     \   aleSupport: v:false,
@@ -592,7 +710,7 @@ nmap <Leader>gl :Flog<CR>
 "     \   ]
 "     \ }])
 
-" {{{2 ALE
+" {{{3 ALE
 
 " let g:ale_linters_explicit = 1
 " let g:ale_linters = #{
@@ -604,117 +722,3 @@ nmap <Leader>gl :Flog<CR>
 "     \     python: ['black', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
 "     \ }
 " let g:ale_python_black_options = '--line-length 80'
-
-" {{{1 Statusline
-
-function! StatusLine() abort
-    let [a,m,r] = GitGutterGetHunkSummary()
-    let parts = []
-    let suffix = g:statusline_winid == win_getid(winnr()) ? '' : 'NC'
-
-    if a > 0
-        let parts += ['%#GitStatusAdd' . suffix . '#' . printf('+%d', a) . '%*']
-    endif
-
-    if m > 0
-        let parts += ['%#GitStatusChange' . suffix . '#' . printf('~%d', m) . '%*']
-    endif
-
-    if r > 0
-        let parts += ['%#GitStatusDelete' . suffix . '#' . printf('-%d', r) . '%*']
-    endif
-
-    let git_status = ''
-
-    if !empty(parts)
-        let git_status = ' ' . join(parts, ' ')
-    endif
-
-    return " %f%4( %m%) "
-                \ . git_status
-                \ . "%="
-                \ . "%{&filetype} %-6.6{&fileencoding} %-4.4{&fileformat}"
-                \ . " %4.4(%p%%%)%6.6l:%-3.3v"
-endfunction
- 
-function! s:SetupGitGutter()
-    if !exists('g:loaded_gitgutter')
-        return
-    endif
-
-    execute 'highlight default GitStatusAdd guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
-    execute 'highlight GitStatusChange guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
-    execute 'highlight GitStatusDelete guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLine')), 'bg')
-    execute 'highlight default GitStatusAddNC guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
-    execute 'highlight GitStatusChangeNC guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterChange')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
-    execute 'highlight GitStatusDeleteNC guifg='
-        \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
-        \ . ' guibg='
-        \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
-
-    set statusline=%!StatusLine()
-endfunction
-
-function! OpenGitStatus()
-    let l:previous_win = win_getid()
-    echo l:previous_win
-    leftabove vertical G
-    vertical resize 50
-    setlocal winfixwidth
-    call win_gotoid(l:previous_win)
-endfunction
-
-function! GetGitStatusWin()
-    let l:current_tabpage = tabpagenr()
-    for l:winnr in range(1, winnr('$'))
-        let l:bufnr = winbufnr(l:winnr)
-        let l:buftype = getbufvar(l:bufnr, '&buftype')
-        let l:bufname = bufname(l:bufnr)
-        if l:buftype ==# 'nowrite' && l:bufname =~# '^fugitive://.*\.git//$'
-            return l:winnr
-        endif
-    endfor
-    return 0
-endfunction
-
-function! ToggleGitStatus()
-    let l:win = GetGitStatusWin()
-    if l:win
-        execute l:win . 'wincmd c'
-        return
-    endif
-
-    call OpenGitStatus()
-endfunction
-
-function! s:SetupNERDTree()
-    if !exists('g:loaded_nerd_tree')
-        return
-    endif
-
-    " Exit Vim if NERDTree is the only window remaining in the only tab.
-    autocmd BufEnter * if tabpagenr('$') == 1 &&
-                \ winnr('$') == 1 &&
-                \ exists('b:NERDTree') &&
-                \ b:NERDTree.isTabTree() |
-                \ quit |
-                \ endif
-endfunction
-
-autocmd VimEnter * call s:SetupGitGutter()
-autocmd VimEnter * call s:SetupNERDTree()
