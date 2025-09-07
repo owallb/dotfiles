@@ -219,8 +219,7 @@ let g:onedark_color_overrides = {
             \ "cursor_grey": { "gui": "#282c34", "cterm": "236", "cterm16": "0" },
             \}
 
-if (has("autocmd"))
-  augroup colorextend
+augroup colorextend
     autocmd!
     autocmd ColorScheme * call onedark#extend_highlight("Terminal", 
                 \ { "bg": { "gui": "#1f2329" } }
@@ -249,8 +248,7 @@ if (has("autocmd"))
     autocmd ColorScheme * call onedark#set_highlight("DiffDelete", 
                 \ { "bg": { "gui": "#3d2224", "cterm": "NONE" } }
                 \)
-  augroup END
-endif
+augroup END
 
 " {{{3 Undotree
 let g:undotree_WindowLayout = 2
