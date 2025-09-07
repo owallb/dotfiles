@@ -76,6 +76,7 @@ set updatetime=100
 set hidden
 set incsearch
 set jumpoptions=stack
+set signcolumn=yes
 set statusline=\ %m\%=
             \%-5.5{&filetype}\ %-6.6{&fileencoding}\ %-4.4{&fileformat}
             \\ %4.4(%p%%%)%5.5l:%-3.3v
@@ -681,4 +682,4 @@ autocmd VimEnter * call s:SetupGitGutter()
 
 cnoreabbrev term terminal ++curwin
 
-autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap colorcolumn=""
+autocmd TerminalWinOpen * setlocal nonumber norelativenumber nowrap signcolumn=no colorcolumn=
