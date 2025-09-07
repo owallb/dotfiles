@@ -145,7 +145,7 @@ nmap <Leader>fb :Buffers<CR>
 nmap <Leader>fg :Rg ""<CR>
 nmap <expr> <Leader>fe &filetype ==# 'netrw' ? ':Rex<CR>' : ':Ex<CR>'
 nmap <C-w>q :bn \| bd#<CR>
-nmap <Leader>tt :NERDTreeToggle<CR>
+nmap <Leader>tt :NERDTreeToggle \| wincmd p<CR>
 nmap <Leader>uu :tabnew \| bprevious \| UndotreeToggle \| UndotreeFocus<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-\> <Esc>
@@ -228,7 +228,7 @@ let g:NERDTreeDirArrowCollapsible = ""
 let g:NERDTreeDirArrowExpandable = ""
 let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeShowHidden = 1
-let g:NERDTreeWinSize = 40
+let g:NERDTreeWinSize = 50
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeCascadeSingleChildDir = 0
 let g:NERDTreeRemoveFileCmd = "gio trash "
@@ -714,9 +714,6 @@ function! s:SetupNERDTree()
                 \ b:NERDTree.isTabTree() |
                 \ quit |
                 \ endif
-
-    " Start NERDTree and put the cursor back in the other window.
-    NERDTree | wincmd p
 endfunction
 
 autocmd VimEnter * call s:SetupGitGutter()
