@@ -357,6 +357,8 @@ function! s:SetupGitGutter()
         return
     endif
 
+    highlight GitGutterChange guifg=#4fa6ed
+
     execute 'highlight default GitStatusAdd guifg='
         \ . synIDattr(synIDtrans(hlID('GitGutterAdd')), 'fg')
         \ . ' guibg='
