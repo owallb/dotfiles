@@ -305,6 +305,67 @@ let g:undotree_DiffCommand = "diff -u"
 let g:undotree_SplitWidth = 50
 let g:undotree_DiffpanelHeight = 20
 
+" {{{3 Fuzzbox
+
+let g:fuzzbox_respect_gitignore = 0
+let g:fuzzbox_keymaps = {
+            \   'menu_up': ["\<C-p>", "\<Up>"],
+            \   'menu_down': ["\<C-n>", "\<Down>"],
+            \   'menu_select': ["\<CR>"],
+            \   'menu_page_up': [],
+            \   'menu_page_down': [],
+            \   'menu_scroll_up': ["\<C-u>", "\<PageUp>"],
+            \   'menu_scroll_down': ["\<C-d>", "\<PageDown>"],
+            \   'preview_page_up': [],
+            \   'preview_page_down': [],
+            \   'preview_scroll_up': ["\<S-Up>"],
+            \   'preview_scroll_down': ["\<S-Down>"],
+            \   'cursor_end': ["\<C-e>", "\<End>"],
+            \   'cursor_begining': ["\<C-a>", "\<Home>"],
+            \   'cursor_word_left': ["\<M-f>"],
+            \   'cursor_word_right': ["\<M-b>"],
+            \   'backspace': ["\<BS>"],
+            \   'delete': ["\<Del>"],
+            \   'delete_all': ["\<C-k>"],
+            \   'delete_word': ["\<A-d>"],
+            \   'delete_prefix': [],
+            \   'exit': ["\<Esc>", "\<C-c>", "\<c-[>"],
+            \ }
+let g:fuzzbox_buffers_keymap = {
+            \   'delete_file': "",
+            \   'wipe_buffer': "",
+            \   'close_buffer': "\<C-x>",
+            \ }
+let g:fuzzbox_window_layout = {
+            \   'files': {
+            \       'preview': 0,
+            \       'width': 0.3,
+            \       'height': 0.5,
+            \   },
+            \   'grep': {
+            \       'preview': 1,
+            \       'width': 0.6,
+            \       'height': 0.5,
+            \       'preview_ratio': 0.5,
+            \   },
+            \   'buffers': {
+            \       'preview': 0,
+            \       'width': 0.3,
+            \       'height': 0.5,
+            \   },
+            \   'mru': {
+            \       'preview': 0,
+            \       'width': 0.3,
+            \       'height': 0.5,
+            \   },
+            \   'highlights': {
+            \       'preview': 1,
+            \       'width': 0.6,
+            \       'height': 0.5,
+            \       'preview_ratio': 0.5,
+            \   },
+            \ }
+
 " {{{2 Install
 
 let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
@@ -319,8 +380,6 @@ call plug#begin(s:plug_dir)
 Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'markonm/traces.vim'
 Plug 'rbong/vim-flog'
@@ -330,6 +389,7 @@ Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'mbbill/undotree'
+Plug 'vim-fuzzbox/fuzzbox.vim'
 
 " Plug 'prabirshrestha/vim-lsp'
 " Plug 'dense-analysis/ale' 
@@ -442,40 +502,12 @@ nmap <Leader>ga :G commit --amend<CR>
 nmap <Leader>gp :G push<CR>
 nmap <Leader>gg :call ToggleGitStatus()<CR>
 
-" {{{3 Fzf
+" {{{3 Fuzzbox
 
-autocmd! FileType fzf tnoremap <buffer> <C-k> <Up>
-autocmd! FileType fzf tnoremap <buffer> <C-j> <Down>
-autocmd! FileType fzf tnoremap <buffer> <C-l> <CR>
-
-" To match exact, prefix word with `'`
-command! -bang -nargs=* Rg call fzf#vim#grep(
-            \ "rg"
-            \ . " --column"
-            \ . " --line-number"
-            \ . " --no-heading"
-            \ . " --color=always"
-            \ . " --smart-case"
-            \ . " --iglob=!.git"
-            \ . " --hidden"
-            \ . " --no-ignore-vcs " .<q-args>, 1, <bang>0)
-
-command! -bang CwdHistory call fzf#run(fzf#wrap({
-            \ 'source': filter(
-            \   fzf#vim#_recent_files(),
-            \   'v:val !~ "^\\~\\?/"'
-            \ ),
-            \ 'options': [
-            \   '-m',
-            \   '--header-lines', !empty(expand('%')),
-            \   '--prompt', 'CwdHist> '
-            \ ]},
-            \ <bang>0))
-
-nmap <Leader>ff :Files<CR>
-nmap <Leader>fr :CwdHistory<CR>
-nmap <Leader>fb :Buffers<CR>
-nmap <Leader>fg :Rg ""<CR>
+nmap <Leader>ff :FuzzyFiles<CR>
+nmap <Leader>fr :FuzzyMruCwd<CR>
+nmap <Leader>fb :FuzzyBuffers<CR>
+nmap <Leader>fg :FuzzyGrep<CR>
 
 " {{{3 NERDTree
 
