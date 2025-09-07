@@ -254,6 +254,12 @@ let g:NERDTreeRemoveDirCmd = "gio trash "
 let g:NERDTreeMapActivateNode = "<C-l>"
 let g:NERDTreeMapCloseDir = "<C-h>"
 
+" {{{3 vim-nerdtree-syntax-highlight
+
+let g:NERDTreeSyntaxDisableDefaultExtensions = 1
+let g:NERDTreeSyntaxDisableDefaultExactMatches = 1
+let g:NERDTreeSyntaxDisableDefaultPatternMatches = 1
+
 " {{{3 onedark
 
 let g:onedark_color_overrides = {
@@ -310,19 +316,20 @@ endif
 
 let s:plug_dir = expand('$HOME/.vim/plugged')
 call plug#begin(s:plug_dir)
-    Plug 'joshdick/onedark.vim'
-    Plug 'tpope/vim-commentary'
-    Plug 'tpope/vim-fugitive'
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'markonm/traces.vim'
-    Plug 'rbong/vim-flog'
-    Plug 'chrisbra/Colorizer'
-    Plug 'jceb/vim-orgmode'
-    Plug 'preservim/nerdtree'
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'mbbill/undotree'
+Plug 'joshdick/onedark.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'markonm/traces.vim'
+Plug 'rbong/vim-flog'
+Plug 'chrisbra/Colorizer'
+Plug 'jceb/vim-orgmode'
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'mbbill/undotree'
 
     " Plug 'prabirshrestha/vim-lsp'
     " Plug 'dense-analysis/ale' 
