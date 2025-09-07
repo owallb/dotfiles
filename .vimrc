@@ -97,11 +97,6 @@ map <Leader>dp :diffput<CR>
 map <Leader>do :diffget<CR>
 xmap <Leader>dp :diffput<CR>
 xmap <Leader>do :diffget<CR>
-nmap ]g <Plug>(GitGutterNextHunk)
-nmap [g <Plug>(GitGutterPrevHunk)
-map <Leader>gs <Plug>(GitGutterStageHunk)
-map <Leader>gr <Plug>(GitGutterUndoHunk)
-map <Leader>g? <Plug>(GitGutterPreviewHunk)
 xmap < <gv
 xmap > >gv
 map <C-LeftMouse> <Nop>
@@ -133,8 +128,6 @@ nmap tn :tabnew<CR>
 nmap tq :tabclose<CR>
 nmap <expr> <Leader>fe &filetype ==# 'netrw' ? ':Rex<CR>' : ':Ex<CR>'
 nmap <C-w>q :bn \| bd#<CR>
-nmap <Leader>tt :NERDTreeToggle \| wincmd p<CR>
-nmap <Leader>uu :tabnew \| bprevious \| UndotreeToggle \| UndotreeFocus<CR>
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-\> <Esc>
 
@@ -386,6 +379,12 @@ function! s:SetupGitGutter()
         \ . synIDattr(synIDtrans(hlID('GitGutterDelete')), 'fg')
         \ . ' guibg='
         \ . synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg')
+
+    nmap ]g <Plug>(GitGutterNextHunk)
+    nmap [g <Plug>(GitGutterPrevHunk)
+    map <Leader>gs <Plug>(GitGutterStageHunk)
+    map <Leader>gr <Plug>(GitGutterUndoHunk)
+    map <Leader>g? <Plug>(GitGutterPreviewHunk)
 endfunction
 
 autocmd VimEnter * call s:SetupGitGutter()
@@ -484,6 +483,13 @@ function! s:SetupNERDTree()
 endfunction
 
 autocmd VimEnter * call s:SetupNERDTree()
+
+nmap <Leader>tt :NERDTreeToggle \| wincmd p<CR>
+
+" {{{3 Undotree
+
+nmap <Leader>uu :tabnew \| bprevious \| UndotreeToggle \| UndotreeFocus<CR>
+
 " {{{3 flog
 
 nmap <Leader>gl :Flog<CR>
