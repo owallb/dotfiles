@@ -7,7 +7,8 @@ set tui border-mode normal
 set tui active-border-mode normal
 set tui tab-width 4
 set tui mouse-events on
-tui enable
+
+set print pretty on
 
 break __assert_fail
 commands
