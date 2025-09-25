@@ -81,6 +81,8 @@ set signcolumn=yes
 syntax on
 filetype plugin indent on
 
+runtime ftplugin/man.vim
+
 " {{{1 Mappings
 
 if !empty($TMUX) && executable('tmux')
