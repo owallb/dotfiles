@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
-local ENABLE_MULTIPLEXING = true
+local ENABLE_MULTIPLEXING = false
 
 -- quickstart: https://wezfurlong.org/wezterm/config/files.html
 -- spec: https://wezfurlong.org/wezterm/config/lua/general.html
