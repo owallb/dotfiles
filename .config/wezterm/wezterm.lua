@@ -9,16 +9,9 @@ local ENABLE_MULTIPLEXING = true
 
 -- General settings
 
-config.window_padding = {
-    left = 5,
-    right = 5,
-    top = 5,
-    bottom = 5,
-}
 config.audible_bell = "Disabled"
 config.warn_about_missing_glyphs = false
-config.initial_cols = 179
-config.initial_rows = 60
+
 -- Settings below get overriden if multiplexing is enabled
 config.window_decorations = "TITLE|RESIZE"
 config.enable_tab_bar = false
