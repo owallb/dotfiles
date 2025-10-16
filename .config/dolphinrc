@@ -16,6 +16,7 @@ DirHistory[$e]=$HOME/Downloads/protondrive/
 EditableUrl=true
 OpenExternallyCalledFolderInNewTab=true
 ShowFullPath=true
+ShowStatusBar=FullWidth
 Version=202
 ViewPropsTimestamp=2024,8,26,16,47,20.342
 

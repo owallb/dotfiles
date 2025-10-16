@@ -20,5 +20,9 @@ dynamic_padding = false
 dynamic_title = false
 title = "Terminal"
 
+# [window.dimensions]
+# columns = 120
+# lines = 45
+
 [window.padding]
 x = 3

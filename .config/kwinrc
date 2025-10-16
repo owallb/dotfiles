@@ -1,11 +1,19 @@
 [Compositing]
 AllowTearing=false
 
+[Desktops]
+Id_1=e1fac5a2-0626-4ae9-8c30-7a8246a37a63
+Number=1
+Rows=1
+
 [EdgeBarrier]
 EdgeBarrier=0
 
 [Effect-hidecursor]
 InactivityDuration=3
+
+[Effect-overview]
+BorderActivate=9
 
 [MouseBindings]
 CommandWindow3=Activate, raise and pass click
@@ -20,6 +28,11 @@ HighlightWindows=false
 [Tiling]
 padding=4
 
+[Tiling][e1fac5a2-0626-4ae9-8c30-7a8246a37a63][23307bd7-c207-4b3d-91f9-9e1bfdedccac]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][e1fac5a2-0626-4ae9-8c30-7a8246a37a63][661c6b40-6f46-4ff6-b96b-919d474d3d91]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Xwayland]
 Scale=1
-
