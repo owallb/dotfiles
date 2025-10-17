@@ -54,6 +54,7 @@ SYMLINKS=(
     ".config/lf"
     ".config/opencode"
     ".config/picom"
+    ".config/pipewire"
     ".config/rofi"
     ".config/strawberry"
     ".config/tmux"
