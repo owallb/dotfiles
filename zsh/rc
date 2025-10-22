@@ -44,18 +44,21 @@ bindkey -a '_' vi-first-non-blank
 # shellcheck disable=SC2034
 zle_highlight=(region:bg=#323641)
 
-# Change cursor shape based on vi mode
+# Vi mode indicator in prompt
 function zle-keymap-select {
-    if [[ ${KEYMAP} == main ]]; then
-        echo -ne '\e[5 q'  # Beam cursor for insert mode
-    elif [[ ${KEYMAP} == vicmd ]]; then
-        echo -ne '\e[1 q'  # Block cursor for command mode
+    if [[ ${KEYMAP} == vicmd ]]; then
+        VI_MODE_INDICATOR="%F{yellow}N%f"
+    else
+        VI_MODE_INDICATOR=""
     fi
+    zle reset-prompt
 }
 zle -N zle-keymap-select
 
 function zle-line-init {
-    echo -ne '\e[5 q'  # Beam cursor for insert mode
+    # shellcheck disable=SC2034
+    VI_MODE_INDICATOR=""
+    zle reset-prompt
 }
 zle -N zle-line-init
 
