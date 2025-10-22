@@ -60,6 +60,7 @@ SYMLINKS=(
     ".config/tmux"
     ".config/vlc"
     ".config/wezterm"
+    ".config/wireplumber"
     ".config/yay"
     ".config/zed"
     ".local/bin"
