@@ -1,4 +1,9 @@
 " vim: set foldmethod=marker:
+" {{{1 Platform Detection
+
+let s:is_windows = has('win32') || has('win64')
+let s:is_unix = has('unix')
+
 " {{{1 Global Variables
 
 let g:skip_defaults_vim = 1
@@ -18,11 +23,15 @@ let g:netrw_sort_options = 'i'
 let g:netrw_sort_sequence = '[\/]\s*,*'
 let g:netrw_special_syntax = v:true
 let g:netrw_timefmt = '%d-%m-%Y %H:%M'
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
-let &t_SR = "\e[4 q"
+
+" Terminal codes (Unix/Linux only)
+if s:is_unix
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    let &t_SI = "\e[6 q"
+    let &t_EI = "\e[2 q"
+    let &t_SR = "\e[4 q"
+endif
 
 " {{{1 Options
 
@@ -44,7 +53,11 @@ set nosmarttab
 set foldlevelstart=99
 set foldmethod=indent
 set foldignore=
-set guifont=Iosevka\ Custom\ 12
+if s:is_windows
+    set guifont=Iosevka_Custom:h12
+else
+    set guifont=Iosevka\ Custom\ 12
+endif
 set completeopt=menu,menuone,preview,noinsert,noselect
 set matchpairs=(:),{:},[:],<:>
 set linebreak
@@ -108,9 +121,11 @@ imap <C-a> <C-o>^
 imap <C-e> <C-o>$
 imap <C-k> <C-o>C
 imap <C-d> <C-o>x
-execute "set <M-f>=\ef"
-execute "set <M-b>=\eb"
-execute "set <M-d>=\ed"
+if !s:is_windows
+    execute "set <M-f>=\ef"
+    execute "set <M-b>=\eb"
+    execute "set <M-d>=\ed"
+endif
 imap <M-f> <C-o>w
 imap <M-b> <C-o>b
 imap <M-d> <C-o>dw
@@ -252,8 +267,13 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 50
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeCascadeSingleChildDir = 0
-let g:NERDTreeRemoveFileCmd = "gio trash "
-let g:NERDTreeRemoveDirCmd = "gio trash "
+if s:is_windows
+    let g:NERDTreeRemoveFileCmd = "del /q "
+    let g:NERDTreeRemoveDirCmd = "rmdir /s /q "
+else
+    let g:NERDTreeRemoveFileCmd = "gio trash "
+    let g:NERDTreeRemoveDirCmd = "gio trash "
+endif
 let g:NERDTreeMapActivateNode = "<C-l>"
 let g:NERDTreeMapCloseDir = "<C-h>"
 
@@ -304,7 +324,11 @@ augroup END
 " {{{3 Undotree
 
 let g:undotree_WindowLayout = 2
-let g:undotree_DiffCommand = "diff -u"
+if s:is_windows
+    let g:undotree_DiffCommand = "FC"
+else
+    let g:undotree_DiffCommand = "diff -u"
+endif
 let g:undotree_SplitWidth = 50
 let g:undotree_DiffpanelHeight = 20
 
@@ -371,14 +395,28 @@ let g:fuzzbox_window_layout = {
 
 " {{{2 Install
 
-let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
-if !filereadable(s:plug_file)
-    silent execute '!curl -fkLo ' . s:plug_file ' --create-dirs'
-                \ ' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if s:is_windows
+    let s:plug_file = expand('$HOME/vimfiles/autoload/plug.vim')
+    let s:plug_dir = expand('$HOME/vimfiles/plugged')
+else
+    let s:plug_file = expand('$HOME/.vim/autoload/plug.vim')
+    let s:plug_dir = expand('$HOME/.vim/plugged')
 endif
 
-let s:plug_dir = expand('$HOME/.vim/plugged')
+if !filereadable(s:plug_file)
+    if s:is_windows
+        silent execute '!powershell -Command "'
+                    \ . 'New-Item -ItemType Directory -Force -Path '
+                    \ . fnamemodify(s:plug_file, ':h') . '; '
+                    \ . 'Invoke-WebRequest -Uri '
+                    \ . 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim '
+                    \ . '-OutFile ' . s:plug_file . '"'
+    else
+        silent execute '!curl -fkLo ' . s:plug_file ' --create-dirs'
+                    \ ' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    endif
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 call plug#begin(s:plug_dir)
 Plug 'joshdick/onedark.vim'
 Plug 'tpope/vim-commentary'
