@@ -64,6 +64,7 @@ SYMLINKS=(
     ".config/yay"
     ".config/zed"
     ".local/bin"
+    ".local/share/easyeffects"
     ".local/share/fonts"
     ".local/share/konsole"
     ".gdbinit"
