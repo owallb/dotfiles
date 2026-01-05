@@ -43,6 +43,7 @@ SYMLINKS=(
     ".config/dunst"
     ".config/fish"
     ".config/foot"
+    ".config/fontconfig"
     ".config/frogminer"
     ".config/ghostty"
     ".config/i3"
