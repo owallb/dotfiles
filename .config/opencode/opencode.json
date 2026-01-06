@@ -10,5 +10,14 @@
         "webfetch": "deny",
         "doom_loop": "ask",
         "external_directory": "ask"
+    },
+    "keybinds": {
+        "messages_page_up": "pageup,ctrl+b",
+        "messages_page_down": "pagedown,ctrl+f",
+        "messages_half_page_up": "ctrl+u",
+        "messages_half_page_down": "ctrl+d",
+        "command_list": "ctrl+shift+p",
+        "messages_next": "ctrl+n",
+        "messages_previous": "ctrl+p"
     }
 }
