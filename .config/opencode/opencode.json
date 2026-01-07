@@ -17,5 +17,12 @@
         "command_list": "ctrl+shift+p",
         "messages_next": "ctrl+n",
         "messages_previous": "ctrl+p"
+    },
+    "mcp": {
+        "context7": {
+            "type": "local",
+            "command": ["npx", "-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"],
+            "enabled": true
+        }
     }
 }
