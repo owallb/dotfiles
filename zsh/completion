@@ -18,8 +18,6 @@ bindkey ' ' magic-space
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey -M menuselect '^M' .accept-line             # Immediately execute command line on <Enter>
 bindkey -M menuselect '^F' vi-insert                # Toggle interactive mode
-bindkey '^P' history-beginning-search-backward
-bindkey '^N' history-beginning-search-forward
 
 # See: https://zsh.sourceforge.io/Doc/Release/Completion-System.html#Standard-Styles
 # :completion:<function>:<completer>:<command>:<argument>:<tag>
