@@ -41,6 +41,15 @@ bindkey -e
 bindkey '^P' history-beginning-search-backward
 bindkey '^N' history-beginning-search-forward
 
+# Load history search widgets
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+
+# Fix for buggy behaviour of history search
+# See https://github.com/zsh-users/zsh-autosuggestions/issues/619#issuecomment-904193190
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-beginning-search-backward-end history-beginning-search-forward-end)
+
 if ! infocmp "$TERM" >/dev/null; then
     echo "TERM $TERM not supported on your system!" >&2
     echo "Some keybindings might not work properly." >&2
@@ -69,8 +78,8 @@ if [[ -n $terminfo ]]; then
     [[ -n "${key[End]}"         ]]  && bindkey  "${key[End]}"        end-of-line
     [[ -n "${key[Insert]}"      ]]  && bindkey  "${key[Insert]}"     overwrite-mode
     [[ -n "${key[Delete]}"      ]]  && bindkey  "${key[Delete]}"     delete-char
-    [[ -n "${key[Up]}"          ]]  && bindkey  "${key[Up]}"         history-beginning-search-backward
-    [[ -n "${key[Down]}"        ]]  && bindkey  "${key[Down]}"       history-beginning-search-forward
+    [[ -n "${key[Up]}"          ]]  && bindkey  "${key[Up]}"         history-beginning-search-backward-end
+    [[ -n "${key[Down]}"        ]]  && bindkey  "${key[Down]}"       history-beginning-search-forward-end
     [[ -n "${key[Left]}"        ]]  && bindkey  "${key[Left]}"       backward-char
     [[ -n "${key[Right]}"       ]]  && bindkey  "${key[Right]}"      forward-char
     [[ -n "${key[PageUp]}"      ]]  && bindkey  "${key[PageUp]}"     beginning-of-history
