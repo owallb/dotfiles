@@ -1,2 +1,2 @@
 > [!WARNING]
-> This project has moved to [codeberg.org/warg/dotfiles](https://codeberg.org/warg/dotfiles).
+> This project has moved to [gitlab.com/warigan/dotfiles](https://gitlab.com/warigan/dotfiles).
