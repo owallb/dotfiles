@@ -1,2 +1,2 @@
 > [!WARNING]
-> This project has moved to [gitlab.com/warigan/dotfiles](https://gitlab.com/warigan/dotfiles).
+> This project has moved to [git.owall.dev/warg/dotfiles](https://git.owall.dev/warg/dotfiles).
